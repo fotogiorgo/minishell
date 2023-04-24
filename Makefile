@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+         #
+#    By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 18:42:58 by jofoto            #+#    #+#              #
-#    Updated: 2023/04/24 13:40:17 by jofoto           ###   ########.fr        #
+#    Updated: 2023/04/24 14:04:05 by kakumar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS =				-Wall -Wextra -Werror
+FLAGS =				-Wall -Wextra -Werror -lreadline
 
 SRC =				main.c
 
