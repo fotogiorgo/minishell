@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+         #
+#    By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 18:42:58 by jofoto            #+#    #+#              #
-#    Updated: 2023/04/24 14:12:10 by jofoto           ###   ########.fr        #
+#    Updated: 2023/04/24 14:46:33 by kakumar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 FLAGS =				-Wall -Wextra -Werror -lreadline
 
-SRC =				main.c
+SRC =				main.c builtins/pwd.c check_commands.c
 
 OBJ =				$(SRC:%.c=%.o)
 

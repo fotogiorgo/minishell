@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+         #
+#    By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/06 16:07:12 by ehida             #+#    #+#              #
-#    Updated: 2023/04/01 20:47:19 by jofoto           ###   ########.fr        #
+#    Updated: 2023/04/24 15:14:53 by kakumar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ SRC = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
 		ft_strjoin.c ft_strtrim.c ft_striteri.c ft_strmapi.c \
 		ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
 		ft_itoa.c ft_split.c atoi_int_only.c safe_malloc.c free_split.c \
-		get_next_line_bonus.c get_next_line_utils_bonus.c
+		get_next_line_bonus.c get_next_line_utils_bonus.c \
+		ft_strncmp_case_ins.c
 
 SRC_BONUS = ft_lstnew_bonus.c ft_lstadd_front_bonus.c \
 			ft_lstsize_bonus.c ft_lstlast_bonus.c ft_lstadd_back_bonus.c \
@@ -37,7 +38,8 @@ OBJ = ft_isalpha.o ft_isdigit.o ft_isalnum.o ft_isascii.o \
 		ft_strjoin.o ft_strtrim.o ft_striteri.o ft_strmapi.o \
 		ft_putchar_fd.o ft_putstr_fd.o ft_putendl_fd.o ft_putnbr_fd.o \
 		ft_itoa.o ft_split.o atoi_int_only.o safe_malloc.o free_split.o \
-		get_next_line_bonus.o get_next_line_utils_bonus.o
+		get_next_line_bonus.o get_next_line_utils_bonus.o \
+		ft_strncmp_case_ins.o
 
 OBJ_BONUS = ft_lstnew_bonus.o ft_lstadd_front_bonus.o \
 		  	ft_lstsize_bonus.o ft_lstlast_bonus.o ft_lstadd_back_bonus.o \

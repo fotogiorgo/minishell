@@ -3,26 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/04/24 14:11:51 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/04/24 14:44:08 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "includes/minishell.h"
 
 void init_shell(void)
 {
 	printf("\n\n\n\n Minishell by jofoto and kakumar \n\n\n\n");
-}
-
-void get_pwd(void)
-{
-	char cwd[1024];
-
-	getcwd(cwd, sizeof(cwd));
-	printf("Current dir: %s\n", cwd);
 }
 
 int	take_input(char *str)
@@ -44,13 +36,13 @@ int	take_input(char *str)
 
 int main(void)
 {
-	char inputstr[100000];
+	char input_str[MAXIN];
 	
 	init_shell();
 	while (1)
 	{
-		get_pwd();
-		if (take_input(inputstr))
+		if (take_input(input_str))
 			continue;
+		check_command_from_input(input_str);
 	}
 }
