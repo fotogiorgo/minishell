@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/04/24 14:44:08 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/04/25 18:44:08 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,24 @@ void init_shell(void)
 int	take_input(char *str)
 {
 	char	*buff;
-	int		len;
+	size_t	len;
 	
-	len = ft_strlen(buff);
 	buff = readline("minishell$ ");
+	len = ft_strlen(buff);
 	if (len != 0)
 	{
 		add_history(buff);
-		ft_strlcpy(str, buff, len);
+		ft_strlcpy(str, buff, len + 1);
+		free(buff);
+		rl_on_new_line();
 		return (0);
 	}
 	else
+	{
+		free(buff);
+		rl_on_new_line();
 		return (1);
+	}
 }
 
 int main(void)
