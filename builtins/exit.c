@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/24 14:28:12 by kakumar           #+#    #+#             */
-/*   Updated: 2023/04/25 12:39:53 by kakumar          ###   ########.fr       */
+/*   Created: 2023/04/25 13:39:10 by kakumar           #+#    #+#             */
+/*   Updated: 2023/04/25 13:45:20 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void get_pwd(void)
+void	exit_func(void)
 {
-	char cwd[1024];
-
-	getcwd(cwd, sizeof(cwd));
-	printf("%s\n", cwd);
+	printf("exit\n");
+	exit(0);
 }
