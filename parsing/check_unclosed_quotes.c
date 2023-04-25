@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 12:57:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/04/25 18:46:59 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/04/25 19:12:12 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,47 +18,67 @@ int	check_double_quotes(char *input)
 	char *temp;
 
 	i = 0;
-	while (input[i] != '\0')
+	if (input[i] == 34 && input[i] != '\0')
 	{
-		if (input[i] == 34)
-		{
-			i++;
-			temp = ft_strchr(&input[i], 34);
-			if (temp == 0)
-			{
-				printf("minishell$ Error: Unclosed quotes\n");
-				return (-1);
-			}
-			else
-				i += (temp - &input[i]);
-		}
 		i++;
+		temp = ft_strchr(&input[i], 34);
+		if (temp == 0)
+		{
+			printf("minishell$ Error: Unclosed double quotes\n");
+			return (-1);
+		}
+		else
+		{
+			i += (temp - &input[i]) + 1;
+			return (i);
+		}
 	}
 	return (0);
 }
 
-//ascii value for ' is 39
 int	check_single_quotes(char *input)
 {
 	int	i;
 	char *temp;
 
 	i = 0;
+	if (input[i] == 39)
+	{
+		i++;
+		temp = ft_strchr(&input[i], 39);
+		if (temp == 0)
+		{
+			printf("minishell$ Error: Unclosed single quotes\n");
+			return (-1);
+		}
+		else
+		{
+			i += (temp - &input[i]) + 1;
+			return (i);
+		}
+	}
+	return (0);
+}
+
+int	check_quotes(char *input)
+{
+	int	i;
+
+	i = 0;
 	while (input[i] != '\0')
 	{
-		if (input[i] == 39)
-		{
-			i++;
-			temp = ft_strchr(&input[i], 39);
-			if (temp == 0)
-			{
-				printf("minishell$ Error: Unclosed quotes\n");
+		if (input[i] == 34)
+			if (check_double_quotes(&input[i]) == -1)
 				return (-1);
-			}
 			else
-				i += (temp - &input[i]);
-		}
-		i++;
+				i += check_double_quotes(&input[i]);
+		else if(input[i] == 39)
+			if (check_single_quotes(&input[i]) == -1)
+				return (-1);
+			else
+				i += check_single_quotes(&input[i]);
+		else
+			i++;
 	}
 	return (0);
 }

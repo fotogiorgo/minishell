@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 12:12:09 by kakumar           #+#    #+#             */
-/*   Updated: 2023/04/25 18:44:38 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/04/25 19:05:00 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*remove_quotes(char *input)
 	len = 0;
 	if (!input)
 		return (NULL);
-	if (check_double_quotes(input) == -1 || check_single_quotes(input) == -1)
+	if (check_quotes(input) == -1)
 		return (NULL);
 	len = length_without_quotes(input);
 	removed_input = return_input_without_quotes(input, len);

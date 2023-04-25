@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 16:27:30 by kakumar           #+#    #+#             */
-/*   Updated: 2023/04/25 18:44:34 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/04/25 19:06:21 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	get_echo(char *input)
 		input += 3;
 	}
 	removed_quotes_input = remove_quotes(input);
-	if (put_new_line == 0)
+	if (put_new_line == 0 && removed_quotes_input)
 	{
 		printf("%s", removed_quotes_input);
 		free(removed_quotes_input);
 		return ;
 	}
-	else if (put_new_line == 1)
+	else if (put_new_line == 1 && removed_quotes_input)
 	{
 		printf("%s\n", removed_quotes_input);
 		free(removed_quotes_input);
