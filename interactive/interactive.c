@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   interactive.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/25 14:42:14 by jofoto            #+#    #+#             */
-/*   Updated: 2023/04/24 16:56:17 by jofoto           ###   ########.fr       */
+/*   Created: 2023/04/24 14:24:37 by jofoto            #+#    #+#             */
+/*   Updated: 2023/04/25 14:47:57 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
+#include "../includes/minishell.h"
 
-size_t	ft_strlen(const char *s)
+void	handle_signal(int sig)
 {
-	size_t	result;
+	printf("Caught SIGINT!\n");
+	//rl_replace_line("\n", 1);
+   	//rl_redisplay();
+	//rl_redisplay();
+}
 
-	result = 0;
-	if (s == 0)
-		return (0);
-	while (*s != 0)
-	{
-		result++;
-		s++;
-	}
-	return (result);
+void	init_signals(void)
+{
+	struct sigaction	sa;
+	
+	sa.sa_flags = SA_RESTART;
+	//sa.sa_flags = SA_SIGINFO;
+	//sa.sa_mask = SIGQUIT;
+	sa.sa_handler = handle_signal;
+	signal(SIGQUIT, SIG_IGN);
+	sigaction(SIGINT, &sa, NULL);
 }

@@ -3,16 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+         #
+#    By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 18:42:58 by jofoto            #+#    #+#              #
-#    Updated: 2023/04/24 14:46:33 by kakumar          ###   ########.fr        #
+#    Updated: 2023/04/25 14:53:41 by jofoto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS =				-Wall -Wextra -Werror -lreadline
+FLAGS =				-Wall -Wextra -Werror -g -fsanitize=address \
+					-lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
 
-SRC =				main.c builtins/pwd.c check_commands.c
+
+
+SRC =				main.c interactive/interactive.c builtins/pwd.c check_commands.c
 
 OBJ =				$(SRC:%.c=%.o)
 
@@ -23,7 +26,7 @@ LIBFT =				libft/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJ) $(LIBFT)
-	cc -o $(NAME) $(OBJ) $(FLAGS) $(LIBFT)
+	cc -o $(NAME) $(OBJ) $(LIBFT) $(FLAGS)
 
 $(OBJ): %.o: %.c
 	cc -c $? -o $@
