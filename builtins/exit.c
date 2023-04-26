@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:39:10 by kakumar           #+#    #+#             */
-/*   Updated: 2023/04/25 13:45:20 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/04/26 12:47:04 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	exit_func(void)
 {
-	printf("exit\n");
+	disable_enable_echoctl(1);
+	write(1, "exit\n", 6);
 	exit(0);
 }
