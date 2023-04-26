@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 12:57:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/04/25 19:12:12 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/04/26 12:18:07 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	check_single_quotes(char *input)
 	char *temp;
 
 	i = 0;
-	if (input[i] == 39)
+	if (input[i] == 39 && input[i] != '\0')
 	{
 		i++;
 		temp = ft_strchr(&input[i], 39);

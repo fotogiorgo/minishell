@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_commands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:33:18 by kakumar           #+#    #+#             */
-/*   Updated: 2023/04/25 18:01:41 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/04/26 10:51:20 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 
 void	check_command_from_input(char *input)
 {
-	//printf("input = %s\n",  input);
 	if (ft_strncmp_case_ins(input, "pwd", 3) == 0)
 		get_pwd();
 	else if (ft_strncmp_case_ins(input, "echo", 4) == 0)
