@@ -1,31 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   tokenize_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/24 14:24:37 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/02 19:48:40 by jofoto           ###   ########.fr       */
+/*   Created: 2023/05/02 17:58:05 by jofoto            #+#    #+#             */
+/*   Updated: 2023/05/02 17:58:23 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	handle_signal(int sig)
+void	add_char_to_token(char	**str, t_token_vec	*tkn_vec)
 {
-	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if(tkn_vec->curr == tkn_vec->cap)
+		realloc_token(tkn_vec);
+	tkn_vec->token[tkn_vec->curr] = *str[0];
+	str[0]++;
+	tkn_vec->curr++;
 }
 
-void	init_signals(void)
+void	add_nl_to_token(t_token_vec	*tkn_vec)
 {
-	struct sigaction	sa;
-
-	sa.sa_flags = SA_RESTART;
-	sa.sa_handler = handle_signal;
-	signal(SIGQUIT, SIG_IGN);
-	sigaction(SIGINT, &sa, NULL);
+	if(tkn_vec->curr == tkn_vec->cap)
+		realloc_token(tkn_vec);
+	tkn_vec->token[tkn_vec->curr] = '\n';
+	tkn_vec->curr++;
 }

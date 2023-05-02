@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/04/26 12:51:52 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/02 19:50:52 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,40 +30,37 @@ void	ctrl_D_handler(void)
 	exit(1);
 }
 
-int	take_input(char *str)
+//buff is free'd in tokenize_input()
+int	take_input(char *str, t_argv_vec argv)
 {
 	char	*buff;
-	size_t	len;
 
 	buff = readline("minishell$ ");
 	if (buff == NULL)
 		ctrl_D_handler();
-	len = ft_strlen(buff);
-	if (len != 0)
-	{
-		add_history(buff);
-		ft_strlcpy(str, buff, len + 1);
-		free(buff);
-		rl_on_new_line();
-		return (0);
-	}
 	else
 	{
-		free(buff);
-		rl_on_new_line();
-		return (1);
+		add_history(buff);
+		if(tokenize_input(buff, &argv) == 0)
+			return (0);
+		/* here you can take the argv and cleanse it (remove the
+		quotes that have to be removed, add env variables)*/
 	}
+	return(1);
 }
 
+/* remember that after using the input free the entire argv
+so it can be used agaain for the next readline*/
 int main(void)
 {
-	char input_str[MAXIN];
+	char		input_str[MAXIN];
+	t_argv_vec	argv;
 
 	init_shell();
 	while (1)
 	{
-		if (take_input(input_str))
+		if (!take_input(input_str, argv)) // i changed this so always when something goes wrong we return 0
 			continue;
-		check_command_from_input(input_str);
+		//check_command_from_input(input_str);
 	}
 }
