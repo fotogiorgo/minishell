@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:54:30 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/02 17:57:10 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/03 10:09:26 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,6 @@ void	realloc_vector(t_argv_vec	*argv)
 	while (i < argv->curr)
 	{
 		new_argv[i] = argv->argv[i];
-		i++;
-	}
-	i = 0;
-	while (i < argv->curr)
-	{
-		free(argv->argv[i]);
 		i++;
 	}
 	free(argv->argv);

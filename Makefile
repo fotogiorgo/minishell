@@ -6,11 +6,11 @@
 #    By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 18:42:58 by jofoto            #+#    #+#              #
-#    Updated: 2023/05/02 18:01:31 by jofoto           ###   ########.fr        #
+#    Updated: 2023/05/03 10:18:30 by jofoto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS =				-Wall -Wextra -Werror\
+FLAGS =				-Wall -Wextra -Werror \
 					-lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
 
 SRC =				main.c builtins/pwd.c builtins/echo.c builtins/exit.c \

@@ -6,11 +6,32 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/02 19:38:23 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/03 10:18:23 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	add_env_var(char **str, t_token_vec *tkn_vec)
+{
+	char	var_name[32767];
+	char	*var_value;
+	int		i;
+
+	i = 0;
+	str[0]++;
+	while(ft_isalpha(*str[0]))
+	{
+		var_name[i] = *str[0];
+		i++;
+		str[0]++;
+	}
+	var_name[i] = 0;
+	var_value = getenv(var_name);
+	i = ft_strlen(var_value);
+	while(*var_value)
+		add_char_to_token(&var_value, tkn_vec);
+}
 
 static int	find_quote(char	**str, t_token_vec	*tkn_vec, char quote)
 {
@@ -18,14 +39,15 @@ static int	find_quote(char	**str, t_token_vec	*tkn_vec, char quote)
 	static char	which_quote;
 
 	if (searching_quote == 1)
-	{
-		str[0]++;
 		quote = which_quote;
-	}
-	else
-		add_char_to_token(str, tkn_vec); 
+	str[0]++; 
 	while(*str[0] != quote && *str[0] != '\0')
-		add_char_to_token(str, tkn_vec);
+	{
+		if (*str[0] == '$' && quote != '\'')
+			add_env_var(str, tkn_vec);
+		else
+			add_char_to_token(str, tkn_vec);
+	}
 	if(*str[0] == '\0')
 	{
 		add_nl_to_token(tkn_vec);
@@ -36,7 +58,7 @@ static int	find_quote(char	**str, t_token_vec	*tkn_vec, char quote)
 	else
 	{
 		searching_quote = 0;
-		add_char_to_token(str, tkn_vec);
+		str[0]++;
 		return(1);
 	}
 }
@@ -53,6 +75,8 @@ static int	get_token(char	**str, char **token)
 			if(!find_quote(str, &tkn_vec, *str[0]))
 				return (1);
 		}
+		else if(*str[0] == '$')
+			add_env_var(str, &tkn_vec);
 		else
 			add_char_to_token(str, &tkn_vec);
 	}
