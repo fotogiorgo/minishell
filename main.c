@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/02 19:50:52 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/05 16:36:41 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void init_shell(void)
 
 /* \033[11C moves cursor right 11 spots */
 /* \033[1A moves cursor up 1 spot */
-void	ctrl_D_handler(void)
+void	ctrl_D_handler(t_argv_vec *argv)
 {
 	disable_enable_echoctl(1);
 	write(1, "\033[1A", 5);
@@ -31,36 +31,53 @@ void	ctrl_D_handler(void)
 }
 
 //buff is free'd in tokenize_input()
-int	take_input(char *str, t_argv_vec argv)
+int	take_input(char *str, t_argv_vec *argv)
 {
 	char	*buff;
 
 	buff = readline("minishell$ ");
 	if (buff == NULL)
-		ctrl_D_handler();
+		ctrl_D_handler(argv);
 	else
 	{
 		add_history(buff);
-		if(tokenize_input(buff, &argv) == 0)
+		if(tokenize_input(buff, argv) == 0)
 			return (0);
-		/* here you can take the argv and cleanse it (remove the
-		quotes that have to be removed, add env variables)*/
 	}
 	return(1);
 }
 
+void	init_data(t_data *data, t_argv_vec *argv, char **envp)
+{
+	data->argv = argv;
+	data->num_of_env_var = 0;
+	data->envp_list = NULL;
+	data->envp_list = create_our_envp(data, envp);
+	data->exit_code = 0;
+	return ;
+}
+
 /* remember that after using the input free the entire argv
 so it can be used agaain for the next readline*/
-int main(void)
+int main(int argc, char **argv1, char **envp)
 {
 	char		input_str[MAXIN];
 	t_argv_vec	argv;
-
+	t_data		data;
+	
+	(void) argv1;
+	(void) argc;
 	init_shell();
+	init_data(&data, &argv, envp);
 	while (1)
 	{
-		if (!take_input(input_str, argv)) // i changed this so always when something goes wrong we return 0
+		if (!take_input(input_str, &argv)) // i changed this so always when something goes wrong we return 0
 			continue;
-		//check_command_from_input(input_str);
+		check_command_from_input(&data, &argv);
+
+		
+		// printf("==-===== main =====-==-===\n");
+		// print_argv(argv);
+		free_argv(&argv);
 	}
 }
