@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:31 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/05 16:37:36 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/08 15:02:14 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_envp_list	*ft_newlst(char	*str, int i)
 	l->key = get_key(str);
 	l->value = get_value(str);
 	l->next = NULL;
+	// l->prev = NULL;
 	return (l);
 }
 
@@ -42,6 +43,27 @@ void	ft_add_back(t_envp_list **lst, char *str, int i)
 		{
 			current = current->next;
 		}
+		// new_node->prev = current;
 		current->next = new_node;
 	}
+}
+
+char	*get_value_from_key(char *key)
+{
+	t_envp_list	*list;
+	char		*result;
+	int			len;
+	
+	len = ft_strlen(key);
+	list = data.envp_list;
+	while (list)
+	{
+		if (ft_strncmp(key, list->key, len) != 0)
+		{
+			result = list->value;
+			return (result);
+		}
+		list = list->next;
+	}
+	return (NULL);
 }
