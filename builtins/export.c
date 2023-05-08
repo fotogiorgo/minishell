@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 10:07:36 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/05 17:42:40 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/08 10:33:34 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,22 +40,15 @@ int	export_error_handling(char *str)
 	return (0);
 }
 
-void	add_env(t_data *data)
+void	add_env(char *argv)
 {
-	int	i;
-
-	i = 1;
-	while (i < data->argv->curr)
+	if (export_error_handling(argv) == 1)
+		data->exit_code = 1;
+	else
 	{
-		if (export_error_handling(data->argv->argv[i]) == 1)
-			data->exit_code = 1;
-		else
-		{
-			ft_add_back(&data->envp_list, \
-			data->argv->argv[i], data->num_of_env_var);
-			data->num_of_env_var++;
-		}
-		i++;
+		ft_add_back(&data->envp_list, \
+		argv, data->num_of_env_var);
+		data->num_of_env_var++;
 	}
 }
 
@@ -70,7 +63,7 @@ void	modify_existing_env(char *value, char *str)
 	return ;	
 }
 
-int	check_existing_and_modify(t_data *data, char *str)
+int	check_existing_and_modify(char *str)
 {
 	t_envp_list *list;
 	char		*key;
@@ -99,24 +92,24 @@ int	check_existing_and_modify(t_data *data, char *str)
 	return (0);
 }
 
-void	export_var(t_data *data)
+void	export_var(char **argv)
 {
 	int	i;
 
 	i = 0;
 	data->exit_code = 0;
-	while (data->argv->argv[i])
+	while (argv[i])
 		i++;
-	if (i == 1)
+	if (i == 0)
 	{
-		export_without_args(data);
+		export_without_args(argv);
 		return ;
 	}
-	i = 1;
-	while (i < data->argv->curr)
+	i = 0;
+	while (i < data->argv->curr - 1)
 	{
-		if (check_existing_and_modify(data, data->argv->argv[i]) == 0)
-			add_env(data);
+		if (check_existing_and_modify(argv[i]) == 0)
+			add_env(argv[i]);
 		i++;
 	}
 	return ;

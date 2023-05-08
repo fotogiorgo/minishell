@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/05 14:52:11 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/08 10:25:31 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,26 +65,28 @@ typedef struct s_data
 	t_tree	*right;				// NULL in case of executable (echo)
 }				t_tree; */
 
+t_data	*data;
+
 //delete later
 void	print_argv(t_argv_vec	argv);
 
 //list
 t_envp_list	*ft_newlst(char	*str, int i);
 void		ft_add_back(t_envp_list	**lst, char *str, int i);
-t_envp_list	*create_our_envp(t_data *data, char **envp);
+t_envp_list	*create_our_envp(char **envp);
 char		*get_key(char *str);
 char		*get_value(char *str);
 
 //builtins
 void	get_pwd(char *str);
-void	get_echo(t_argv_vec *argv);
+void	get_echo(char **argv);
 void	get_all_env(t_envp_list **envps);
-void	export_var(t_data *data);
-void	export_without_args(t_data *data);
+void	export_var(char **argv);
+void	export_without_args(char **argv);
 void	exit_func(void);
 
 //parsing
-void	check_command_from_input(t_data *data, t_argv_vec	*argv);
+void	check_command_from_input(t_argv_vec	*argv);
 int		tokenize_input(char *str, t_argv_vec	*argv);
 void	init_vec(t_argv_vec	*argv);
 void	init_token(t_token_vec	*tkn_vec);

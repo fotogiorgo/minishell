@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:21:59 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/05 16:42:36 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/08 10:25:17 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	print_export_without_args(t_envp_list *list, int i, int flag)
 	return ;
 }
 
-void	export_without_args(t_data *data)
+void	export_without_args(char **argv)
 {
 	t_envp_list	*list;
 	int			i;

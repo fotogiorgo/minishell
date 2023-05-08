@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/05 16:36:41 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/08 10:39:04 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,25 @@ int	take_input(char *str, t_argv_vec *argv)
 		ctrl_D_handler(argv);
 	else
 	{
+		if (ft_strlen(buff) < 1)
+		{
+			free(buff);
+			return (0);
+		}
 		add_history(buff);
-		if(tokenize_input(buff, argv) == 0)
+		if (tokenize_input(buff, argv) == 0)
 			return (0);
 	}
 	return(1);
 }
 
-void	init_data(t_data *data, t_argv_vec *argv, char **envp)
+void	init_data(t_argv_vec *argv, char **envp)
 {
+	data = (t_data *) malloc (sizeof(t_data));
 	data->argv = argv;
 	data->num_of_env_var = 0;
 	data->envp_list = NULL;
-	data->envp_list = create_our_envp(data, envp);
+	data->envp_list = create_our_envp(envp);
 	data->exit_code = 0;
 	return ;
 }
@@ -63,17 +69,16 @@ int main(int argc, char **argv1, char **envp)
 {
 	char		input_str[MAXIN];
 	t_argv_vec	argv;
-	t_data		data;
 	
 	(void) argv1;
 	(void) argc;
 	init_shell();
-	init_data(&data, &argv, envp);
+	init_data(&argv, envp);
 	while (1)
 	{
 		if (!take_input(input_str, &argv)) // i changed this so always when something goes wrong we return 0
 			continue;
-		check_command_from_input(&data, &argv);
+		check_command_from_input(&argv);
 
 		
 		// printf("==-===== main =====-==-===\n");

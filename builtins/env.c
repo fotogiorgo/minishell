@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:52:39 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/05 15:23:33 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/08 10:24:18 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	get_all_env(t_envp_list	**envps)
 	return ;
 }
 
-t_envp_list	*create_our_envp(t_data *data, char **envp)
+t_envp_list	*create_our_envp(char **envp)
 {
 	int			i;
 	t_envp_list *envp_list;
