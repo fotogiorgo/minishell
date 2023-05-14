@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:10:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/10 17:23:50 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 13:24:58 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*get_path(char	*command)
 	if (paths == NULL)
 		return (NULL);
 	split_paths = ft_split(paths, ':');
-	free(paths);
+	//free(paths);
 	if (split_paths == NULL)
 		return (NULL);
 	while (split_paths[i] && ret == 0)

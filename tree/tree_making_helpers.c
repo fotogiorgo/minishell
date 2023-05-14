@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:53:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/11 15:20:32 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 18:05:25 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	get_args(t_argv_vec *argv, t_tree *tree)
 
 int	add_remainder_to_beginning(t_argv_vec *argv, t_tree *tree)
 {
+	if(tree == NULL)
+		return (1);
 	while (tree->right)
 		tree = tree->right;
 	if(!get_args(argv, tree))

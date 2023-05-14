@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:24:37 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/10 14:54:55 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 20:24:55 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,11 @@ void	init_signals(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_flags = SA_RESTART;
+	//sa.sa_flags = SA_RESTART;
+	//ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = handle_signal;
 	signal(SIGQUIT, SIG_IGN);
 	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGTSTP, &sa, NULL);
 }
 
 void	handle_child_signal(int sig)
@@ -49,7 +49,8 @@ void	set_child_sigs(void)
 {
 	struct sigaction	sa;
 
-	sa.sa_flags = SA_RESTART;
+	//sa.sa_flags = SA_RESTART;
+	//ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = handle_child_signal;
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGINT, &sa, NULL);

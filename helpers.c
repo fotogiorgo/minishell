@@ -1,27 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fork_wrapper_with_sigs.c                                     :+:      :+:    :+:   */
+/*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/10 16:54:57 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/10 16:59:42 by jofoto           ###   ########.fr       */
+/*   Created: 2023/05/14 18:47:11 by jofoto            #+#    #+#             */
+/*   Updated: 2023/05/14 18:50:12 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include "libft.h"
+#include "includes/minishell.h"
 
-int	fork_wrapper(void)
+int	fork_wrapper_with_sigs(void)
 {
 	int	pid;
 
 	pid = fork();
 	if(pid == -1)
 	{
-		write(1, "fork error\n", 12);
+		write(2, "fork error\n", 12);
 		exit(1);
 	}
+	if (pid == 0)
+		set_child_sigs();
 	return (pid);
 }

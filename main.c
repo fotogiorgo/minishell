@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 12:57:59 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 20:30:05 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ void	print_tree(t_tree *tree)
 }
 
 /* remember that after using the input free the entire argv
-so it can be used agaain for the next readline*/
+so it can be used agaain for the next readline */
 int main(int argc, char **argv1, char **envp)
 {
 	char		input_str[MAXIN];
@@ -117,12 +117,11 @@ int main(int argc, char **argv1, char **envp)
 	while (1)
 	{
 		init_shell();
-		if (!take_input(input_str, &argv)) // i changed this so always when something goes wrong we return 0
+		if (!take_input(input_str, &argv))
 			continue;
 		tree = make_tree(argv); // what if maketree doesnt return
-		set_child_sigs();
+		signal(SIGINT, SIG_IGN);
+		disable_enable_echoctl(1);
 		exec_tree(tree);
-		/* init_signals();
-		disable_enable_echoctl(0); */
 	}
 }

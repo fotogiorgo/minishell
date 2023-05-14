@@ -6,11 +6,11 @@
 #    By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 18:42:58 by jofoto            #+#    #+#              #
-#    Updated: 2023/05/14 11:29:47 by jofoto           ###   ########.fr        #
+#    Updated: 2023/05/14 18:51:38 by jofoto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS =				-Wall -Wextra -Werror \
+FLAGS =				-Wall -Wextra -Werror -fsanitize=address\
 					-lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
 
 SRC =				main.c builtins/pwd.c builtins/echo.c builtins/exit.c builtins/env.c \
@@ -18,7 +18,7 @@ SRC =				main.c builtins/pwd.c builtins/echo.c builtins/exit.c builtins/env.c \
 					interactive/signals.c tree/tree_making.c tree/exec_tree.c tree/exec_tree_helpers.c\
 					interactive/terminal_handles.c parsing/tokenize.c parsing/tokenize_helpers.c \
 					parsing/init_realloc_vectors.c list_utils/list_utils.c list_utils/new_node_utils.c \
-					tree/tree_making_helpers.c parsing/tokenize_env.c
+					tree/tree_making_helpers.c parsing/tokenize_env.c helpers.c
 					
 
 OBJ =				$(SRC:%.c=%.o)

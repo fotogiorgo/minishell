@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:57:56 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/14 12:51:13 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 20:30:18 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	exec_ve(t_tree *tree)
 	char	*command;
 
 	command = get_path(tree->argv_for_func[0]);
-	if(fork_wrapper() == 0)
+	if(fork_wrapper_with_sigs() == 0)
 	{
 		execve(command, tree->argv_for_func, NULL);
 		write(2, "minishell: ", 11);
@@ -62,7 +62,7 @@ void	exec_pipe(t_tree *tree)
 
 	if(pipe(p) < 0)
 		exit(1);
-	if(fork_wrapper() == 0)
+	if(fork_wrapper_with_sigs() == 0)
 	{
 		dup2(p[0], 0);
 		close(p[0]);
@@ -70,7 +70,7 @@ void	exec_pipe(t_tree *tree)
 		exec_tree(tree->left);
 		exit(0);
 	}
-	if(fork_wrapper() == 0)
+	if(fork_wrapper_with_sigs() == 0)
 	{
 		dup2(p[1], 1);
 		close(p[0]);
@@ -101,10 +101,9 @@ void	init_heredoc_sigs(void)
 	sa.sa_handler = handle_signal;
 	signal(SIGQUIT, SIG_IGN);
 	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGTSTP, &sa, NULL);
 }
 
-void	exec_heredoc(t_tree *tree)
+/* void	exec_heredoc(t_tree *tree)
 {
 	char	*line;
 	int		p[2];
@@ -129,14 +128,44 @@ void	exec_heredoc(t_tree *tree)
 	disable_enable_echoctl(1);
 	set_child_sigs();
 	exec_tree(tree->right);
+} */
+
+void	exec_heredoc(t_tree *tree)
+{
+	char	*line;
+	int		p[2];
+
+	if (fork_wrapper_with_sigs() == 0)
+	{
+		init_heredoc_sigs();
+		if(pipe(p) < 0)
+			exit(1);
+		line = readline("> ");
+		while (line && ft_strncmp(tree->argv_for_func[1], line, ft_strlen(tree->argv_for_func[1])) != 0)
+		{
+			write(p[1], line, ft_strlen(line));
+			write(p[1], "\n", 1);
+			free(line);
+			line = readline("> ");
+		}
+		if (line)
+			free(line);
+		dup2(p[0], 0);
+		close(p[0]);
+		close(p[1]);
+		disable_enable_echoctl(1);
+		set_child_sigs();
+		exec_tree(tree->right);
+		exit(0);
+	}
+	wait(&(data.exit_code));
 }
 
-/* does it have to be in a child process? */
 void	exec_redir(t_tree *tree)
 {
 	int	fd;
 
-	if (fork_wrapper() == 0)
+	if (fork_wrapper_with_sigs() == 0)
 	{
 		if (ft_strncmp(tree->argv_for_func[0], ">", 2) == 0)
 		{
@@ -164,7 +193,9 @@ void	exec_redir(t_tree *tree)
 
 void	exec_tree(t_tree *tree)
 {
-	if (tree->type == BI_EXEC)
+	if(tree == NULL)
+		return ;
+	else if (tree->type == BI_EXEC)
 		exec_builtin_leaf(tree);
 	else if (tree->type == EXEC)
 		exec_ve(tree); 

@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 21:32:48 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/11 15:19:17 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 18:24:45 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ static t_tree	*parce_exec(t_argv_vec *argv)
 		exit(1);// should we use exit?
 	if(!get_args(argv, ret))
 		exit(1); //same
+	ret->left = NULL;
+	ret->right = NULL;
 	return (ret);
 }
 
@@ -62,13 +64,13 @@ static t_tree	*parce_redir(t_argv_vec *argv, t_tree *right_node)
 		return (NULL); // same as up free first
 	ret->type = get_type(argv->argv[0]);
 	ret->argv_for_func[0] = argv->argv[0];
-	ret->argv_for_func[1] = argv->argv[1];
-	if (!validate_redir_file(ret->argv_for_func[1]))
+	ret->argv_for_func[1] = argv->argv[1]; // issue if only << is given
+	if (!validate_redir_file(ret->argv_for_func[1])) // issue if only << is given
 		return (NULL); // same as up
 	argv->argv+=2;
 	argv->curr-=2;
 	ret->right = right_node;
-	add_remainder_to_beginning(argv, right_node);
+	add_remainder_to_beginning(argv, right_node); // what if it returns 0 cause malloc failed
 	return (ret);
 }
 
@@ -93,20 +95,20 @@ t_tree	*make_tree(t_argv_vec argv)
 {
 	t_tree	*ret;
 
-	ret = parce_exec(&argv);
+	ret = NULL;
 	while(argv.curr > 0 && argv.argv[0] && argv.argv[0][0])
 	{
 		if (argv.argv[0][0] == '|')
 			ret = parce_pipe(&argv, ret);
-		else
+		else if (argv.argv[0][0] == '>' || argv.argv[0][0] == '<')
 		{
-			//printf("hello\n");
 			ret = parce_redir(&argv, ret);
 			if (ret == NULL)
 				return (NULL);
 		}
+		else
+			ret = parce_exec(&argv);
 	}
-	//print_tree(ret);
 	return (ret);
 }
 

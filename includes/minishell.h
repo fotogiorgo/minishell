@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 12:13:28 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 18:50:58 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ t_tree	*make_tree(t_argv_vec argv);
 char	*check_path(char *path, char *command);
 char	*get_path(char	*command);
 void	exec_tree(t_tree *tree);
-int		fork_wrapper(void);
+int		fork_wrapper_with_sigs(void);
 int		validate_redir_file(char *file);
 int		get_args(t_argv_vec *argv, t_tree *tree);
 int		init_tree_args(t_tree *tree);
@@ -127,4 +127,7 @@ void	init_terminal(void);
 void	rl_replace_line (const char *text, int clear_undo);
 void	disable_enable_echoctl(int enable);
 void	set_child_sigs(void);
+
+//helpers
+int	fork_wrapper_with_sigs(void);
 #endif
