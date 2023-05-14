@@ -6,34 +6,11 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/04 10:33:11 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/10 11:36:14 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-void	add_env_var(char **str, t_token_vec *tkn_vec)
-{
-	char	var_name[32767];
-	char	*var_value;
-	int		i;
-
-	i = 0;
-	str[0]++;
-	while(ft_isalpha(*str[0]))
-	{
-		var_name[i] = *str[0];
-		i++;
-		str[0]++;
-	}
-	var_name[i] = 0;
-	var_value = getenv(var_name);
-	if (var_value == NULL)
-		return ;
-	i = ft_strlen(var_value);
-	while(*var_value)
-		add_char_to_token(&var_value, tkn_vec);
-}
 
 static int	find_quote(char	**str, t_token_vec	*tkn_vec, char quote)
 {
@@ -50,7 +27,7 @@ static int	find_quote(char	**str, t_token_vec	*tkn_vec, char quote)
 		else
 			add_char_to_token(str, tkn_vec);
 	}
-	if(*str[0] == '\0')
+	if (*str[0] == '\0')
 	{
 		add_nl_to_token(tkn_vec);
 		searching_quote = 1;

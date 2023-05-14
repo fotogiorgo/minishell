@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:21:59 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/08 10:25:17 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/08 13:02:48 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	export_without_args(char **argv)
 
 	i = 0;
 	flag = 0;
-	list = data->envp_list;
+	list = data.envp_list;
 	if (!list)
 		return ;
 	print_export_without_args(list, i, flag);

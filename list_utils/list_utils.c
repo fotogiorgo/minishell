@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:31 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/08 15:02:14 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/08 15:21:08 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*get_value_from_key(char *key)
 	list = data.envp_list;
 	while (list)
 	{
-		if (ft_strncmp(key, list->key, len) != 0)
+		if (ft_strncmp(list->key, key, len + 1) == 0)
 		{
 			result = list->value;
 			return (result);

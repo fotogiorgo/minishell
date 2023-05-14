@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/08 15:00:34 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/09 10:52:36 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ char		*get_value(char *str);
 char		*get_value_from_key(char *key);
 
 //builtins
+void	get_cd(char **argv);
 void	get_pwd(void);
 void	get_echo(char **argv);
 void	get_all_env(void);
@@ -92,6 +93,7 @@ void	check_command_from_input(t_argv_vec	*argv);
 int		tokenize_input(char *str, t_argv_vec	*argv);
 void	init_vec(t_argv_vec	*argv);
 void	init_token(t_token_vec	*tkn_vec);
+void	add_env_var(char **str, t_token_vec *tkn_vec);
 void	realloc_vector(t_argv_vec	*argv);
 void	realloc_token(t_token_vec	*tkn_vec);
 void	free_argv(t_argv_vec	*argv);
