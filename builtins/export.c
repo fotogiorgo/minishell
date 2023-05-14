@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 10:07:36 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 11:45:10 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 12:48:38 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,15 +113,14 @@ void	export_var(char **argv)
 {
 	int	i;
 
-	i = data.argv->curr - 1;
 	data.exit_code = 0;
-	if (i == 0)
+	if (argv[0] == NULL)
 	{
 		export_without_args(argv);
 		return ;
 	}
 	i = 0;
-	while (i < data.tree->argv_curr - 1)
+	while (argv[i] != NULL)
 	{
 		if (check_existing_and_modify(argv[i], &data.envp_list) == 0)
 			add_env(argv[i]);

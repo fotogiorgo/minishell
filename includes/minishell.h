@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 11:45:29 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 12:13:28 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ typedef struct s_data
 	t_envp_list	*envp_list;
 	int			num_of_env_var;
 	int			exit_code;
-	t_tree		*tree;
 }				t_data;
 
 t_data	data;

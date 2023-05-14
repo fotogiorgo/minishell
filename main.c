@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 11:41:59 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 12:57:59 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,22 +114,14 @@ int main(int argc, char **argv1, char **envp)
 	(void) argv1;
 	(void) argc;
 	init_data(&argv, envp);
-	//printf("PATH: %s\n", get_value("PATH"));
 	while (1)
 	{
 		init_shell();
 		if (!take_input(input_str, &argv)) // i changed this so always when something goes wrong we return 0
 			continue;
 		tree = make_tree(argv); // what if maketree doesnt return
-		data.tree = tree;
-		disable_enable_echoctl(1);
-		signal(SIGINT, SIG_IGN);
-		if (fork_wrapper() == 0)
-		{
-			set_child_sigs();
-			exec_tree(tree);
-		}
-		wait(NULL);
+		set_child_sigs();
+		exec_tree(tree);
 		/* init_signals();
 		disable_enable_echoctl(0); */
 	}

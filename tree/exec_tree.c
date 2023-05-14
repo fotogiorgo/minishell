@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:57:56 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/14 11:59:01 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 12:51:13 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ void	exec_ve(t_tree *tree)
 		write(2, "minishell: ", 11);
 		write(2, tree->argv_for_func[0], ft_strlen(tree->argv_for_func[0]));
 		write(2, ": command not found\n", 20);
+		exit(127);
 	}
-	wait(NULL);
+	wait(&(data.exit_code));
 	free(command);
 }
 /* we might have an issue here with the -1 */
@@ -67,6 +68,7 @@ void	exec_pipe(t_tree *tree)
 		close(p[0]);
 		close(p[1]);
 		exec_tree(tree->left);
+		exit(0);
 	}
 	if(fork_wrapper() == 0)
 	{
@@ -74,11 +76,12 @@ void	exec_pipe(t_tree *tree)
 		close(p[0]);
 		close(p[1]);
 		exec_tree(tree->right);
+		exit(0);
 	}
 	close(p[0]);
 	close(p[1]);
-	wait(NULL);
-	wait(NULL);
+	wait(&(data.exit_code));
+	wait(&(data.exit_code));
 }
 
 
@@ -133,8 +136,8 @@ void	exec_redir(t_tree *tree)
 {
 	int	fd;
 
-	//if (fork_wrapper() == 0)
-	//{
+	if (fork_wrapper() == 0)
+	{
 		if (ft_strncmp(tree->argv_for_func[0], ">", 2) == 0)
 		{
 			fd = open(tree->argv_for_func[1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
@@ -154,8 +157,9 @@ void	exec_redir(t_tree *tree)
 		}
 		close(fd);
 		exec_tree(tree->right);
-	//};
-	//wait(NULL);
+		exit(0);
+	}
+	wait(&(data.exit_code));
 }
 
 void	exec_tree(t_tree *tree)
@@ -170,5 +174,5 @@ void	exec_tree(t_tree *tree)
 		exec_redir(tree);
 	else if(tree->type == HEREDOC)
 		exec_heredoc(tree);
-	exit(1);
+	return ;
 }
