@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   realloc_2d.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/24 14:28:12 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 11:22:14 by jofoto           ###   ########.fr       */
+/*   Created: 2023/05/11 13:41:25 by jofoto            #+#    #+#             */
+/*   Updated: 2023/05/11 15:21:48 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include <unistd.h>
+#include "libft.h"
 
-void get_pwd(void)
+void	**realloc_two_d(void **array, int curr_size)
 {
-	char	cwd[1024];
+	void	**new_array;
 
-	getcwd(cwd, sizeof(cwd));
-	printf("%s\n", cwd);
+	new_array = malloc(curr_size * 2 * sizeof(void *));
+	if (new_array == NULL)
+		return (NULL);
+	curr_size--;
+	while (curr_size >= 0)
+	{
+		new_array[curr_size] = array[curr_size];
+		curr_size--;
+	}
+	free(array);
+	return(new_array);
 }

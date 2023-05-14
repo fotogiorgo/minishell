@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 15:22:25 by jofoto            #+#    #+#             */
-/*   Updated: 2023/04/24 15:10:20 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/11 13:49:32 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,8 @@ char	*ft_itoa(int n);
 int		atoi_int_only(const char *str, int *fail_switch);
 void	*safe_malloc(size_t size);
 void	free_split(char **arr);
+int		is_char_in_set(char c, char *set);
+int		fork_wrapper(void);
+void	**realloc_two_d(void **array, int curr_size);
 
 #endif

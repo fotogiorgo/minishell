@@ -3,23 +3,22 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+         #
+#    By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 18:42:58 by jofoto            #+#    #+#              #
-#    Updated: 2023/05/10 10:21:20 by kakumar          ###   ########.fr        #
+#    Updated: 2023/05/14 11:29:47 by jofoto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS =				-Wall -Wextra -Werror -g\
-					-lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include -fsanitize=address
+FLAGS =				-Wall -Wextra -Werror \
+					-lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
 
 SRC =				main.c builtins/pwd.c builtins/echo.c builtins/exit.c builtins/env.c \
 					builtins/export.c builtins/export_without_args.c builtins/unset.c builtins/cd.c\
-					parsing/check_commands.c parsing/quote_parser.c parsing/check_unclosed_quotes.c \
-					parsing/string_len_without_quotes.c interactive/signals.c \
+					interactive/signals.c tree/tree_making.c tree/exec_tree.c tree/exec_tree_helpers.c\
 					interactive/terminal_handles.c parsing/tokenize.c parsing/tokenize_helpers.c \
 					parsing/init_realloc_vectors.c list_utils/list_utils.c list_utils/new_node_utils.c \
-					parsing/tokenize_env.c
+					tree/tree_making_helpers.c parsing/tokenize_env.c
 					
 
 OBJ =				$(SRC:%.c=%.o)

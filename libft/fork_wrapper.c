@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   fork_wrapper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/24 14:28:12 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 11:22:14 by jofoto           ###   ########.fr       */
+/*   Created: 2023/05/10 16:54:57 by jofoto            #+#    #+#             */
+/*   Updated: 2023/05/10 16:59:42 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include <unistd.h>
+#include "libft.h"
 
-void get_pwd(void)
+int	fork_wrapper(void)
 {
-	char	cwd[1024];
+	int	pid;
 
-	getcwd(cwd, sizeof(cwd));
-	printf("%s\n", cwd);
+	pid = fork();
+	if(pid == -1)
+	{
+		write(1, "fork error\n", 12);
+		exit(1);
+	}
+	return (pid);
 }

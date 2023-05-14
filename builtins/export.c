@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 10:07:36 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/13 11:42:47 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/14 11:45:10 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	export_var(char **argv)
 		return ;
 	}
 	i = 0;
-	while (i < data.argv->curr - 1)
+	while (i < data.tree->argv_curr - 1)
 	{
 		if (check_existing_and_modify(argv[i], &data.envp_list) == 0)
 			add_env(argv[i]);

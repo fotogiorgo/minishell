@@ -1,21 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   is_char_in_set.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: jofoto <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/24 14:28:12 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 11:22:14 by jofoto           ###   ########.fr       */
+/*   Created: 2022/11/16 16:06:25 by jofoto            #+#    #+#             */
+/*   Updated: 2022/11/26 17:42:14 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-void get_pwd(void)
+int	is_char_in_set(char c, char *set)
 {
-	char	cwd[1024];
-
-	getcwd(cwd, sizeof(cwd));
-	printf("%s\n", cwd);
+	while (*set != 0)
+	{
+		if (*set == c)
+			return (1);
+		set++;
+	}
+	return (0);
 }

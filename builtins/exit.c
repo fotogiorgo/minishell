@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:39:10 by kakumar           #+#    #+#             */
-/*   Updated: 2023/04/26 12:47:04 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/10 15:06:03 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@
 void	exit_func(void)
 {
 	disable_enable_echoctl(1);
-	write(1, "exit\n", 6);
-	exit(0);
+	write(2, "exit\n", 6);
+	kill(getppid(), SIGTSTP);
 }

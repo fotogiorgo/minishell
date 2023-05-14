@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/10 11:36:14 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/14 11:26:15 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-static int	find_quote(char	**str, t_token_vec	*tkn_vec, char quote)
+static int	find_quote(char **str, t_token_vec	*tkn_vec, char quote)
 {
 	static int	searching_quote = 0;
 	static char	which_quote;
@@ -42,7 +42,7 @@ static int	find_quote(char	**str, t_token_vec	*tkn_vec, char quote)
 	}
 }
 
-static int	get_token(char	**str, char **token)
+static int	get_token(char **str, char **token)
 {
 	static t_token_vec	tkn_vec;
 
@@ -69,7 +69,7 @@ static int	get_token(char	**str, char **token)
 }
 // if  we have an input which ends with a space it will give us a null ending 2d array
 // actually the character will be nul.. not the pointer
-static int	split_argv(char *str, t_argv_vec	*argv)
+static int	split_argv(char *str, t_argv_vec *argv)
 {
 	while (get_token(&str, &argv->argv[argv->curr]))
 	{
@@ -85,7 +85,7 @@ static int	split_argv(char *str, t_argv_vec	*argv)
 	return (1);
 }
 
-void	print_argv(t_argv_vec	argv)
+void	print_argv(t_argv_vec argv)
 {
 	for(int i = 0; i < argv.curr; i++)
 	{
@@ -95,7 +95,7 @@ void	print_argv(t_argv_vec	argv)
 	}
 }
 /* if you do ctr-c while waiting for a quote, its focked (well, not really, it just doesnt work like bash) */
-int	tokenize_input(char *str, t_argv_vec	*argv)
+int	tokenize_input(char *str, t_argv_vec *argv)
 {
 	char	*dummy;
 
@@ -119,7 +119,6 @@ int	tokenize_input(char *str, t_argv_vec	*argv)
 		free(str);
 		str = dummy;
 	}
-	// print_argv(*argv);
 	free(str);
 	return (1);
 }

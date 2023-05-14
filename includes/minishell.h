@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/09 10:52:36 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/14 11:45:29 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,26 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include "../libft/libft.h"
 # include <readline/readline.h> //readline
 # include <readline/history.h> //add history
 # include <signal.h>
 # include <termios.h>
+# include <fcntl.h>
 
-#define MAXIN 1024 // maxinput
+# define MAXIN 1024 // maxinput
+# define OPERATORS ">|<"
+
+# define PIPE		1
+# define EXEC		2
+# define BI_EXEC	3
+# define REDIR		4
+# define HEREDOC	5
 
 typedef struct	s_argv_vec
 {
-	char	**argv;  //argc
+	char	**argv;	//argv
 	int		curr;	//argc
 	int		cap;
 }				t_argv_vec;
@@ -43,9 +52,19 @@ typedef struct s_envp_list
 	char				*variable;
 	char				*key;
 	char				*value;
-	// struct s_envp_list	*prev;
 	struct s_envp_list	*next;
 }				t_envp_list;
+
+typedef	struct s_tree
+{
+	int				type;				// = #DEFINE PIPE
+	char			*func_to_exec;		// NULL in a case of pipe
+	char			**argv_for_func;	// "blah blah" int case of echo
+	int				argv_cap;
+	int				argv_curr;
+	struct s_tree	*left;				// NULL in case of executable (echo)
+	struct s_tree	*right;				// NULL in case of executable (echo)
+}				t_tree;
 
 typedef struct s_data
 {
@@ -53,22 +72,14 @@ typedef struct s_data
 	t_envp_list	*envp_list;
 	int			num_of_env_var;
 	int			exit_code;
+	t_tree		*tree;
 }				t_data;
-
-/* typedef	struct s_tree
-{
-	int		type;				// = #DEFINE PIPE
-	char	*func_to_exec;		// NULL in a case of pipe
-	char	**argv_for_func;	// "blah blah" int case of echo
-	int		fd_of_redirect;
-	t_tree	*left;				// NULL in case of executable (echo)
-	t_tree	*right;				// NULL in case of executable (echo)
-}				t_tree; */
 
 t_data	data;
 
 //delete later
 void	print_argv(t_argv_vec	argv);
+void	print_tree(t_tree *tree);
 
 //list
 t_envp_list	*ft_newlst(char	*str, int i);
@@ -100,9 +111,21 @@ void	free_argv(t_argv_vec	*argv);
 void	add_char_to_token(char	**str, t_token_vec	*tkn_vec);
 void	add_nl_to_token(t_token_vec	*tkn_vec);
 
+//tree
+t_tree	*make_tree(t_argv_vec argv);
+char	*check_path(char *path, char *command);
+char	*get_path(char	*command);
+void	exec_tree(t_tree *tree);
+int		fork_wrapper(void);
+int		validate_redir_file(char *file);
+int		get_args(t_argv_vec *argv, t_tree *tree);
+int		init_tree_args(t_tree *tree);
+int		add_remainder_to_beginning(t_argv_vec *argv, t_tree *tree);
+
 //interactive
 void	init_signals(void);
 void	init_terminal(void);
 void	rl_replace_line (const char *text, int clear_undo);
 void	disable_enable_echoctl(int enable);
+void	set_child_sigs(void);
 #endif
