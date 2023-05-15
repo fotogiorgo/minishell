@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 10:14:12 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/09 12:42:48 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/14 15:41:47 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,111 @@
 
 void	cd_home(void)
 {
-	t_envp_list *list;
+	t_envp_list	*list;
 
-	list = data.envp_list;
+	list = g_data.envp_list;
 	while (list)
 	{
 		if (ft_strncmp(list->key, "HOME", 5) == 0)
-			break;
+			break ;
 		else
 			list = list->next;
 	}
 	if (list == NULL)
 	{
 		printf("minishell: cd: HOME not set");
-		data.exit_code = 1;
+		g_data.exit_code = 1;
 		return ;
 	}
 	else
 	{
 		if (chdir(list->value))
 		{
-			printf("bash: cd: %s: No such file or directory\n", list->value);
-			data.exit_code = 1;
-			return ;
+			printf("minishell: cd: %s: No such file or directory\n", \
+			list->value);
+			g_data.exit_code = 1;
 		}
 	}
 }
 
+void	change_oldpwd_env(char old[1024])
+{
+	t_envp_list	*list;
+	char		*new_var;
+	char		*new_value;
+
+	list = g_data.envp_list;
+	new_value = ft_strdup(old);
+	while (list)
+	{
+		if (ft_strncmp(list->key, "OLDPWD", 7) == 0)
+		{
+			if (list->value != NULL)
+				free(list->value);
+			list->value = new_value;
+			new_var = ft_strjoin("OLDPWD=", new_value);
+			free(list->variable);
+			list->variable = new_var;
+			break ;
+		}
+		list = list->next;
+	}
+	return ;
+}
+
+void	change_pwd_env(char old[1024])
+{
+	t_envp_list	*list;
+	char		*new_var;
+	char		*new_value;
+	char		curr_folder[1024];
+
+	list = g_data.envp_list;
+	getcwd(curr_folder, sizeof(curr_folder));
+	new_value = ft_strdup(curr_folder);
+	while (list)
+	{
+		if (ft_strncmp(list->key, "PWD", 4) == 0)
+		{
+			if (list->value != NULL)
+				free(list->value);
+			list->value = new_value;
+			new_var = ft_strjoin("PWD=", new_value);
+			free(list->variable);
+			list->variable = new_var;
+			break ;
+		}
+		list = list->next;
+	}
+	change_oldpwd_env(old);
+	return ;
+}
+
 void	get_cd(char **argv)
 {
-	data.exit_code = 0;
-	if (data.argv->curr - 1 == 0)
+	char	current_folder[1024];
+
+	getcwd(current_folder, sizeof(current_folder));
+	g_data.exit_code = 0;
+	if (argv[0] == NULL)
 	{
 		cd_home();
 		return ;
 	}
 	if (argv[0][0] == '\0')
 		return ;
-	if (chdir(argv[0]) != 0)
+	if (opendir(argv[0]) == NULL)
 	{
-		printf("bash: cd: %s: No such file or directory\n", argv[0]);
-		data.exit_code = 1;
+		printf("minishell: cd: %s: Permission denied\n", argv[0]);
+		g_data.exit_code = 1;
 		return ;
 	}
+	if (chdir(argv[0]) != 0)
+	{
+		printf("minishell: cd: %s: No such file or directory\n", argv[0]);
+		g_data.exit_code = 1;
+		return ;
+	}
+	change_pwd_env(current_folder);
 	return ;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:52:39 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 11:31:59 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 15:41:35 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	get_all_env(void)
 {
 	t_envp_list	*list_copy;
 
-	list_copy = data.envp_list;
+	list_copy = g_data.envp_list;
 	while (list_copy)
 	{
 		if (ft_strchr(list_copy->variable, '=') != 0)
@@ -29,17 +29,17 @@ void	get_all_env(void)
 t_envp_list	*create_our_envp(char **envp)
 {
 	int			i;
-	t_envp_list *envp_list;
+	t_envp_list	*envp_list;
 
 	i = 0;
-	envp_list = ft_newlst(envp[i], data.num_of_env_var);
+	envp_list = ft_newlst(envp[i], g_data.num_of_env_var);
 	if (envp_list == NULL)
 		return (NULL);
-	data.num_of_env_var++;
-	while (envp[data.num_of_env_var] != NULL)
+	g_data.num_of_env_var++;
+	while (envp[g_data.num_of_env_var] != NULL)
 	{
-		ft_add_back(&envp_list, envp[data.num_of_env_var], data.num_of_env_var);
-		data.num_of_env_var++;
+		ft_add_back(&envp_list, envp[g_data.num_of_env_var], g_data.num_of_env_var);
+		g_data.num_of_env_var++;
 	}
 	return (envp_list);
 }

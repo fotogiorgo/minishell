@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:21:59 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/08 13:02:48 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/14 15:41:35 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,30 @@ void	export_without_args(char **argv)
 
 	i = 0;
 	flag = 0;
-	list = data.envp_list;
+	list = g_data.envp_list;
 	if (!list)
 		return ;
 	print_export_without_args(list, i, flag);
 	return ;
+}
+
+int	check_key_in_export(char *key, char *str)
+{
+	int	i;
+
+	i = 0;
+	while (key[i] != '\0')
+	{
+		if (ft_isalpha(key[i]) == 1 || key[i] == '_' \
+		|| (ft_isdigit(key[i]) == 1 && i != 0))
+			i++;
+		else
+		{
+			printf("minishell: export: '%s': not a valid identifier\n", str);
+			g_data.exit_code = 1;
+			free(key);
+			return (1);
+		}
+	}
+	return (0);
 }

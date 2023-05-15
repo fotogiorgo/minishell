@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 16:27:30 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 11:56:32 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 15:37:25 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	print_echo(char	**argv, int put_new_line, int i)
 
 int	check_new_line(char **argv)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
 	while (argv[i] != NULL && ft_strncmp(argv[i], "-n", 2) == 0)
@@ -53,7 +53,7 @@ int	check_new_line(char **argv)
 		if (argv[i][j] == '\0')
 			i++;
 		else
-			break;
+			break ;
 	}
 	return (i);
 }

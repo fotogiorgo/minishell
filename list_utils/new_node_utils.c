@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:45:05 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/05 15:13:48 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/14 15:46:57 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,22 @@ char	*key_without_value(char *str)
 	return (key);
 }
 
+char	*get_key_which_has_value(char *str, int len)
+{
+	char	*key;
+	int		i;
+
+	key = (char *) malloc (sizeof(char) * i + 1);
+	i = 0;
+	while (str[i] != '=')
+	{
+		key[i] = str[i];
+		i++;
+	}
+	key[i] = '\0';
+	return (key);
+}
+
 char	*get_key(char *str)
 {
 	char	*key;
@@ -41,14 +57,7 @@ char	*get_key(char *str)
 		i++;
 	if (str[i] == '=')
 	{
-		key = (char *) malloc (sizeof(char) * i + 1);
-		i = 0;
-		while (str[i] != '=')
-		{
-			key[i] = str[i];
-			i++;
-		}
-		key[i] = '\0';
+		key = get_key_which_has_value(str, i);
 		return (key);
 	}
 	else

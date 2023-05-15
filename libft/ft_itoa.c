@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/02 11:04:37 by jofoto            #+#    #+#             */
-/*   Updated: 2022/11/05 15:00:54 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 13:36:59 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
+#include <stdio.h>
 
 static long	ft_recursive_power(long nb, int power)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   realloc_2d.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:41:25 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/11 15:21:48 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 15:43:24 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,5 @@ void	**realloc_two_d(void **array, int curr_size)
 		curr_size--;
 	}
 	free(array);
-	return(new_array);
+	return (new_array);
 }

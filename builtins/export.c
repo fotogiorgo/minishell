@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 10:07:36 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 12:48:38 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 15:41:35 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	check_key_in_export(char *key, char *str)
-{
-	int	i;
-
-	i = 0;
-	while (key[i] != '\0')
-	{
-		if (ft_isalpha(key[i]) == 1 || key[i] == '_' || (ft_isdigit(key[i]) == 1 && i != 0))
-			i++;
-		else
-		{
-			printf("minishell: export: '%s': not a valid identifier\n", str);
-			data.exit_code = 1;
-			free(key);
-			return (1);
-		}
-	}
-	return (0);
-}
 
 int	export_error_handling(char *str)
 {
@@ -47,7 +27,7 @@ int	export_error_handling(char *str)
 	if (!key || *key == '\0')
 	{
 		printf("minishell: export: '%s': not a valid identifier\n", str);
-		data.exit_code = 1;
+		g_data.exit_code = 1;
 		return (1);
 	}
 	if (check_key_in_export(key, str) == 1)
@@ -60,30 +40,30 @@ int	export_error_handling(char *str)
 void	add_env(char *argv)
 {
 	if (export_error_handling(argv) == 1)
-		data.exit_code = 1;
+		g_data.exit_code = 1;
 	else
 	{
-		ft_add_back(&data.envp_list, \
-		argv, data.num_of_env_var);
-		data.num_of_env_var++;
+		ft_add_back(&g_data.envp_list, \
+		argv, g_data.num_of_env_var);
+		g_data.num_of_env_var++;
 	}
 }
 
 char	*modify_existing_env(t_envp_list *list, char *str)
 {
-	char *new_value;
+	char	*new_value;
 
 	new_value = get_value(str);
 	free(list->variable);
 	list->variable = ft_strdup(str);
 	if (list->value != NULL)
-	 	free(list->value);
-	return (new_value);	
+		free(list->value);
+	return (new_value);
 }
 
 int	check_existing_and_modify(char *str, t_envp_list **lst)
 {
-	t_envp_list *list;
+	t_envp_list	*list;
 	char		*key;
 	int			len;
 
@@ -113,7 +93,7 @@ void	export_var(char **argv)
 {
 	int	i;
 
-	data.exit_code = 0;
+	g_data.exit_code = 0;
 	if (argv[0] == NULL)
 	{
 		export_without_args(argv);
@@ -122,7 +102,7 @@ void	export_var(char **argv)
 	i = 0;
 	while (argv[i] != NULL)
 	{
-		if (check_existing_and_modify(argv[i], &data.envp_list) == 0)
+		if (check_existing_and_modify(argv[i], &g_data.envp_list) == 0)
 			add_env(argv[i]);
 		i++;
 	}

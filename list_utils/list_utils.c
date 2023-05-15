@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:17:31 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 11:44:52 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/14 15:43:45 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ t_envp_list	*ft_newlst(char	*str, int i)
 	l->key = get_key(str);
 	l->value = get_value(str);
 	l->next = NULL;
-	// l->prev = NULL;
 	return (l);
 }
 
@@ -43,7 +42,6 @@ void	ft_add_back(t_envp_list **lst, char *str, int i)
 		{
 			current = current->next;
 		}
-		// new_node->prev = current;
 		current->next = new_node;
 	}
 }
@@ -53,9 +51,9 @@ char	*get_value_from_key(char *key)
 	t_envp_list	*list;
 	char		*result;
 	int			len;
-	
+
 	len = ft_strlen(key);
-	list = data.envp_list;
+	list = g_data.envp_list;
 	while (list)
 	{
 		if (ft_strncmp(list->key, key, len + 1) == 0)

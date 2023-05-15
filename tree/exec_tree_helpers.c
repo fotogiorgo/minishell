@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_tree_helpers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:10:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/14 13:24:58 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/15 13:47:45 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*check_path(char *path, char *command)
 	int		size;
 	char	*ret;
 	int		access_bool;
-	
+
 	size = ft_strlen(path) + ft_strlen(command) + 2;
 	ret = malloc(size);
 	if (ret == NULL)
@@ -42,7 +42,7 @@ char	*get_path(char	*command)
 
 	i = 0;
 	ret = 0;
-	if(access(command, F_OK | X_OK) == 0)
+	if (access(command, F_OK | X_OK) == 0)
 		return (command);
 	paths = get_value_from_key("PATH");
 	if (paths == NULL)
