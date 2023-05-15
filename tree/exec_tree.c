@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:57:56 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/14 20:30:18 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/15 21:51:05 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,19 @@ void	panic(char *error_str)
 {
 	write(2, error_str, ft_strlen(error_str));
 	exit(1);
+}
+
+void	check_exit_status(void)
+{
+	if (WIFEXITED(data.exit_code))
+		return ;
+	else if (WIFSIGNALED(data.exit_code))
+	{
+		if (WTERMSIG(data.exit_code) == 2)
+			write(2, "\n", 1);
+		else if (WTERMSIG(data.exit_code) == 3)
+			write(1, "Quit: 3\n", 9);
+	}
 }
 
 /* command cant be freed cause process gets replaced with execve
@@ -34,6 +47,7 @@ void	exec_ve(t_tree *tree)
 		exit(127);
 	}
 	wait(&(data.exit_code));
+	check_exit_status();
 	free(command);
 }
 /* we might have an issue here with the -1 */
@@ -84,77 +98,39 @@ void	exec_pipe(t_tree *tree)
 	wait(&(data.exit_code));
 }
 
-
-static void	handle_signal(int sig)
-{
-	if(sig == 2)
-		write(1, "\n", 1);	
-	exit(1);
-}
-
-void	init_heredoc_sigs(void)
-{
-	struct sigaction	sa;
-
-	disable_enable_echoctl(0);
-	sa.sa_flags = SA_RESTART;
-	sa.sa_handler = handle_signal;
-	signal(SIGQUIT, SIG_IGN);
-	sigaction(SIGINT, &sa, NULL);
-}
-
-/* void	exec_heredoc(t_tree *tree)
+void	pipe_heredoc_line(t_tree *tree)
 {
 	char	*line;
 	int		p[2];
 
-	init_heredoc_sigs();
 	if(pipe(p) < 0)
 		exit(1);
-	write(1, "> ", 2);
-	line = get_next_line(0);
-	while (ft_strncmp(tree->argv_for_func[1], line, ft_strlen(tree->argv_for_func[1])) != 0
-			|| line[ft_strlen(tree->argv_for_func[1])] != '\n')
+	line = readline("> ");
+	/* if (line == NULL)
+		write(1, "\033[1A\033[2C", 9); */
+	while (line && ft_strncmp(tree->argv_for_func[1], line, ft_strlen(tree->argv_for_func[1])) != 0)
 	{
 		write(p[1], line, ft_strlen(line));
+		write(p[1], "\n", 1);
 		free(line);
-		write(1, "> ", 2);
-		line = get_next_line(0);
+		line = readline("> ");
+		/* if (line == NULL)
+			write(1, "\033[1A\033[2C", 9); */
 	}
-	free(line);
+	if (line)
+		free(line);
 	dup2(p[0], 0);
 	close(p[0]);
 	close(p[1]);
-	disable_enable_echoctl(1);
-	set_child_sigs();
-	exec_tree(tree->right);
-} */
+}
 
 void	exec_heredoc(t_tree *tree)
 {
-	char	*line;
-	int		p[2];
-
 	if (fork_wrapper_with_sigs() == 0)
 	{
 		init_heredoc_sigs();
-		if(pipe(p) < 0)
-			exit(1);
-		line = readline("> ");
-		while (line && ft_strncmp(tree->argv_for_func[1], line, ft_strlen(tree->argv_for_func[1])) != 0)
-		{
-			write(p[1], line, ft_strlen(line));
-			write(p[1], "\n", 1);
-			free(line);
-			line = readline("> ");
-		}
-		if (line)
-			free(line);
-		dup2(p[0], 0);
-		close(p[0]);
-		close(p[1]);
+		pipe_heredoc_line(tree);
 		disable_enable_echoctl(1);
-		set_child_sigs();
 		exec_tree(tree->right);
 		exit(0);
 	}

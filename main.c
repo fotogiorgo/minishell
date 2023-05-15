@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 20:30:05 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/15 21:32:17 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ void init_shell(void)
 void	ctrl_D_handler(t_argv_vec *argv)
 {
 	disable_enable_echoctl(1);
-	write(1, "\033[1A", 5);
-	write(1, "\033[11C", 6);
+	//write(1, "\033[1A", 5);
+	//write(1, "\033[11C", 6);
 	write(1, "exit\n", 6);
 	exit(1);
 }
@@ -125,3 +125,7 @@ int main(int argc, char **argv1, char **envp)
 		exec_tree(tree);
 	}
 }
+
+
+/* change the wrapper to set the signals to default and see what the 
+heredoc does */

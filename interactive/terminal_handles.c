@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 12:42:09 by jofoto            #+#    #+#             */
-/*   Updated: 2023/04/26 12:43:48 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/15 22:16:00 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,15 @@ void	disable_enable_echoctl(int enable)
 	{
 		tcgetattr(STDIN_FILENO, &term);
 		term.c_lflag &= ~(ECHOCTL);
+		term.c_lflag &= ~(ECHO | ECHOK);
 		tcsetattr(STDIN_FILENO, TCSAFLUSH, &term);
 	}
 	else
 	{
 		tcgetattr(STDIN_FILENO, &term);
 		term.c_lflag |= ECHOCTL;
+		//term.c_lflag |= ICANON;
+		term.c_lflag |= (ECHO | ECHOK);
 		tcsetattr(STDIN_FILENO, TCSAFLUSH, &term);
 	}
 }

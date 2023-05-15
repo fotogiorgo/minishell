@@ -6,7 +6,7 @@
 #    By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/06 16:07:12 by ehida             #+#    #+#              #
-#    Updated: 2023/05/14 18:50:03 by jofoto           ###   ########.fr        #
+#    Updated: 2023/05/14 20:34:42 by jofoto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRC = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
 		ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
 		ft_itoa.c ft_split.c atoi_int_only.c safe_malloc.c free_split.c \
 		get_next_line_bonus.c get_next_line_utils_bonus.c \
-		ft_strncmp_case_ins.c is_char_in_set.c fork_wrapper_with_sigs.c realloc_2d.c \
+		ft_strncmp_case_ins.c is_char_in_set.c fork_wrapper.c realloc_2d.c \
 
 SRC_BONUS = ft_lstnew_bonus.c ft_lstadd_front_bonus.c \
 			ft_lstsize_bonus.c ft_lstlast_bonus.c ft_lstadd_back_bonus.c \

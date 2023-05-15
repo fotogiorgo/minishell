@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 18:50:58 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/15 16:50:22 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ void	init_signals(void);
 void	init_terminal(void);
 void	rl_replace_line (const char *text, int clear_undo);
 void	disable_enable_echoctl(int enable);
-void	set_child_sigs(void);
+void	init_heredoc_sigs(void);
 
 //helpers
 int	fork_wrapper_with_sigs(void);
