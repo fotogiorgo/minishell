@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:57:56 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/15 13:46:14 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/15 14:37:16 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void	exec_heredoc(t_tree *tree)
 		exec_tree(tree->right);
 		exit(0);
 	}
-	wait(&(data.exit_code));
+	wait(&(g_data.exit_code));
 }
 
 void	exec_redir(t_tree *tree)
