@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 10:47:45 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 15:49:43 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/17 14:06:46 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,6 @@ char	*get_env_from_list(char *var_name)
 	else
 		ret = list->value;
 	return (ret);
-}
-
-char	*get_var_name(char *str)
-{
-	int		i;
-	char	var_name[32755];
-
-	i = 0;
-	while (ft_isalpha(*str))
-	{
-		var_name[i] = *str;
-		i++;
-		str[0]++;
-	}
-	var_name[i] = 0;
-	return (var_name);
 }
 
 void	do_edges(char *str, t_token_vec *tkn_vec)
@@ -81,7 +65,7 @@ void	add_env_var(char **str, t_token_vec *tkn_vec)
 
 	i = 0;
 	str[0]++;
-	if (*str[0] == ' ' || *str[0] == '\0' || *str[0] == '?')
+	if (*str[0] == ' ' || *str[0] == '\0' || *str[0] == '?' || *str[0] == '\'' || *str[0] == '\"' )
 	{
 		do_edges(str[0], tkn_vec);
 		if (*str[0] == '?')

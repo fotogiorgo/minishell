@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/15 14:48:30 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/17 13:50:35 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <termios.h>
 # include <dirent.h>
 # include <fcntl.h>
+# include <errno.h>
 
 # define MAXIN 1024 // maxinput
 # define OPERATORS ">|<"

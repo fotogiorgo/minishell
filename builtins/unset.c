@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 13:51:25 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 15:41:35 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/17 14:58:41 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,12 @@ int	error_handle_unset(char *str)
 	int	i;
 
 	i = 0;
+	if (!str || *str == '\0')
+	{
+		printf("minishell: unset: '': not a valid identifier\n");
+		g_data.exit_code = 1;
+		return (1);
+	}
 	while (str[i])
 	{
 		if (ft_isalpha(str[i]) == 1 || str[i] == '_' \
@@ -81,6 +87,7 @@ void	unset_var(char **argv)
 	int			len;
 
 	i = 0;
+	g_data.exit_code = 0;
 	while (i < g_data.argv->curr - 1)
 	{
 		len = ft_strlen(argv[i]) + 1;

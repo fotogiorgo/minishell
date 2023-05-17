@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 10:14:12 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 15:41:47 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/17 15:28:00 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,24 +98,22 @@ void	get_cd(char **argv)
 {
 	char	current_folder[1024];
 
-	getcwd(current_folder, sizeof(current_folder));
 	g_data.exit_code = 0;
+	getcwd(current_folder, sizeof(current_folder));
 	if (argv[0] == NULL)
 	{
 		cd_home();
+		change_pwd_env(current_folder);
 		return ;
 	}
 	if (argv[0][0] == '\0')
 		return ;
-	if (opendir(argv[0]) == NULL)
-	{
-		printf("minishell: cd: %s: Permission denied\n", argv[0]);
-		g_data.exit_code = 1;
-		return ;
-	}
 	if (chdir(argv[0]) != 0)
 	{
-		printf("minishell: cd: %s: No such file or directory\n", argv[0]);
+		if (errno == EACCES)
+			printf("minishell: cd: %s: Permission denied\n", argv[0]);
+		else if (errno == ENOENT)
+			printf("minishell: cd: %s: No such file or directory\n", argv[0]);
 		g_data.exit_code = 1;
 		return ;
 	}

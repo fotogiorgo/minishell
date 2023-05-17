@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:52:39 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 15:41:35 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/17 14:57:59 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	get_all_env(void)
 {
 	t_envp_list	*list_copy;
 
+	g_data.exit_code = 0;
 	list_copy = g_data.envp_list;
 	while (list_copy)
 	{

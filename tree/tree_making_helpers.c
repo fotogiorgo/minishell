@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:53:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/15 13:48:00 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/17 14:36:47 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	init_tree_args(t_tree *tree)
 int	get_args(t_argv_vec *argv, t_tree *tree)
 {
 	while (argv->curr > 0 && argv->argv[0] && \
-	argv->argv[0][0] && !is_char_in_set(argv->argv[0][0], OPERATORS))
+	!is_char_in_set(argv->argv[0][0], OPERATORS))
 	{
 		if (tree->argv_curr == tree->argv_cap - 1)
 		{

@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 14:28:12 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/14 15:28:52 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/17 14:58:31 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	get_pwd(void)
 {
 	char	cwd[1024];
 
+	g_data.exit_code = 0;
 	getcwd(cwd, sizeof(cwd));
 	printf("%s\n", cwd);
 	return ;

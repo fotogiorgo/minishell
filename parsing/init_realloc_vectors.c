@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:54:30 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/14 15:53:20 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/15 16:01:07 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	init_vec(t_argv_vec	*argv)
 {
-	argv->argv = (char **)malloc(5 * sizeof(char *));
+	argv->argv = ft_calloc(5, sizeof(char *));
 	if (argv->argv == NULL)
 		exit(1); ////// handle exit
 	argv->curr = 0;
@@ -39,7 +39,7 @@ void	realloc_vector(t_argv_vec	*argv)
 
 	i = 0;
 	argv->cap *= 2;
-	new_argv = (char **)malloc(argv->cap * sizeof(char *));
+	new_argv = ft_calloc(argv->cap, sizeof(char *));
 	if (new_argv == NULL)
 		exit(1); ////// handle exit
 	while (i < argv->curr)

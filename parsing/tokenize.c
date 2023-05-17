@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/14 15:52:19 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/17 14:39:56 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,29 @@ static int	find_quote(char **str, t_token_vec	*tkn_vec, char quote)
 	}
 }
 
+void	add_operator(char **str, char **token)
+{
+	static t_token_vec	tkn_vec;
+
+	init_token(&tkn_vec);
+	add_char_to_token(str, &tkn_vec);
+	if (*str[0] == '>' || *str[0] == '<')
+		add_char_to_token(str, &tkn_vec);
+	if (*str[0] != '\0' || *str[0] != ' ')
+	{
+		*token = tkn_vec.token;
+		tkn_vec.token = 0;
+	}
+	return ;
+}
+
 static int	get_token(char **str, char **token)
 {
 	static t_token_vec	tkn_vec;
 
 	init_token(&tkn_vec);
+	while (*str[0] == ' ')
+		str[0]++;
 	while (*str[0] != '\0' && *str[0] != ' ')
 	{
 		if (*str[0] == '\'' || *str[0] == '\"')
@@ -56,7 +74,8 @@ static int	get_token(char **str, char **token)
 		}
 		else if (*str[0] == '$')
 			add_env_var(str, &tkn_vec);
-//		else if pipe / redirection
+		else if (*str[0] == '|' || *str[0] == '>' || *str[0] == '<')
+			break ;
 		else
 			add_char_to_token(str, &tkn_vec);
 	}
@@ -72,15 +91,27 @@ static int	get_token(char **str, char **token)
 // actually the character will be nul.. not the pointer
 static int	split_argv(char *str, t_argv_vec *argv)
 {
+	int	flag;
+
 	while (get_token(&str, &argv->argv[argv->curr]))
 	{
+		flag = 0;
+		if (*str == '|' || *str == '>' || *str == '<')
+		{
+			argv->curr++;
+			if (argv->curr == argv->cap)
+				realloc_vector(argv);
+			add_operator(&str, &argv->argv[argv->curr]);
+			flag = 1;
+		}
 		if (*str == '\0')
 			return (0); // this means opened quote was given and we need more input
 		else
 			argv->curr++;
 		if (argv->curr == argv->cap)
 			realloc_vector(argv);
-		str++;
+		if (flag == 0)
+			str++;
 	}
 	argv->curr++;
 	return (1);
@@ -122,5 +153,6 @@ int	tokenize_input(char *str, t_argv_vec *argv)
 		str = dummy;
 	}
 	free(str);
+	// print_argv(*argv);
 	return (1);
 }
