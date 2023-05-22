@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:54:30 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/03 11:04:38 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/15 16:01:07 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	init_vec(t_argv_vec	*argv)
 {
-	argv->argv = (char **)malloc(5 * sizeof(char *));
-	if(argv->argv == NULL)
+	argv->argv = ft_calloc(5, sizeof(char *));
+	if (argv->argv == NULL)
 		exit(1); ////// handle exit
 	argv->curr = 0;
 	argv->cap = 5;
@@ -35,12 +35,12 @@ void	init_token(t_token_vec	*tkn_vec)
 void	realloc_vector(t_argv_vec	*argv)
 {
 	char	**new_argv;
-	int i;
+	int		i;
 
 	i = 0;
 	argv->cap *= 2;
-	new_argv = (char **)malloc(argv->cap * sizeof(char *));
-	if(new_argv == NULL)
+	new_argv = ft_calloc(argv->cap, sizeof(char *));
+	if (new_argv == NULL)
 		exit(1); ////// handle exit
 	while (i < argv->curr)
 	{
@@ -54,12 +54,12 @@ void	realloc_vector(t_argv_vec	*argv)
 void	realloc_token(t_token_vec	*tkn_vec)
 {
 	char	*new_token;
-	int i;
+	int		i;
 
 	i = 0;
 	tkn_vec->cap *= 2;
 	new_token = ft_calloc(tkn_vec->cap + 1, sizeof(char));
-	if(new_token == NULL)
+	if (new_token == NULL)
 		exit(1); ////// handle exit
 	ft_strlcpy(new_token, tkn_vec->token, tkn_vec->cap);
 	free(tkn_vec->token);
@@ -68,7 +68,7 @@ void	realloc_token(t_token_vec	*tkn_vec)
 
 void	free_argv(t_argv_vec	*argv)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < argv->curr)

@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:57:56 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/15 21:51:05 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/22 14:16:46 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,13 @@ void	panic(char *error_str)
 
 void	check_exit_status(void)
 {
-	if (WIFEXITED(data.exit_code))
+	if (WIFEXITED(g_data.exit_code))
 		return ;
-	else if (WIFSIGNALED(data.exit_code))
+	else if (WIFSIGNALED(g_data.exit_code))
 	{
-		if (WTERMSIG(data.exit_code) == 2)
+		if (WTERMSIG(g_data.exit_code) == 2)
 			write(2, "\n", 1);
-		else if (WTERMSIG(data.exit_code) == 3)
+		else if (WTERMSIG(g_data.exit_code) == 3)
 			write(1, "Quit: 3\n", 9);
 	}
 }
@@ -46,10 +46,12 @@ void	exec_ve(t_tree *tree)
 		write(2, ": command not found\n", 20);
 		exit(127);
 	}
-	wait(&(data.exit_code));
+	wait(&(g_data.exit_code));
 	check_exit_status();
+	g_data.exit_code = g_data.exit_code % 255;
 	free(command);
 }
+
 /* we might have an issue here with the -1 */
 void	exec_builtin_leaf(t_tree *tree)
 {
@@ -57,7 +59,7 @@ void	exec_builtin_leaf(t_tree *tree)
 	if (ft_strncmp_case_ins(tree->argv_for_func[-1], "echo", 5) == 0)
 		get_echo(tree->argv_for_func);
 	else if (ft_strncmp_case_ins(tree->argv_for_func[-1], "exit", 5) == 0)
-		exit_func();
+		exit_func(tree->argv_for_func);
 	else if (ft_strncmp_case_ins(tree->argv_for_func[-1], "export", 7) == 0)
 		export_var(tree->argv_for_func);
 	else if (ft_strncmp_case_ins(tree->argv_for_func[-1], "pwd", 4) == 0)
@@ -74,7 +76,7 @@ void	exec_pipe(t_tree *tree)
 {
 	int	p[2];
 
-	if(pipe(p) < 0)
+	if (pipe(p) < 0)
 		exit(1);
 	if(fork_wrapper_with_sigs() == 0)
 	{
@@ -94,8 +96,8 @@ void	exec_pipe(t_tree *tree)
 	}
 	close(p[0]);
 	close(p[1]);
-	wait(&(data.exit_code));
-	wait(&(data.exit_code));
+	wait(&(g_data.exit_code));
+	wait(&(g_data.exit_code));
 }
 
 void	pipe_heredoc_line(t_tree *tree)
@@ -134,7 +136,7 @@ void	exec_heredoc(t_tree *tree)
 		exec_tree(tree->right);
 		exit(0);
 	}
-	wait(&(data.exit_code));
+	wait(&(g_data.exit_code));
 }
 
 void	exec_redir(t_tree *tree)
@@ -164,7 +166,7 @@ void	exec_redir(t_tree *tree)
 		exec_tree(tree->right);
 		exit(0);
 	}
-	wait(&(data.exit_code));
+	wait(&(g_data.exit_code));
 }
 
 void	exec_tree(t_tree *tree)
@@ -174,12 +176,12 @@ void	exec_tree(t_tree *tree)
 	else if (tree->type == BI_EXEC)
 		exec_builtin_leaf(tree);
 	else if (tree->type == EXEC)
-		exec_ve(tree); 
+		exec_ve(tree);
 	else if (tree->type == PIPE)
 		exec_pipe(tree);
-	else if(tree->type == REDIR)
+	else if (tree->type == REDIR)
 		exec_redir(tree);
-	else if(tree->type == HEREDOC)
+	else if (tree->type == HEREDOC)
 		exec_heredoc(tree);
 	return ;
 }

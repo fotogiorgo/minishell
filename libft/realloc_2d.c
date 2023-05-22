@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   realloc_2d.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
+/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:41:25 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/11 15:21:48 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/15 15:47:10 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	**realloc_two_d(void **array, int curr_size)
 {
 	void	**new_array;
 
-	new_array = malloc(curr_size * 2 * sizeof(void *));
+	new_array = ft_calloc(curr_size * 2, sizeof(void *));
 	if (new_array == NULL)
 		return (NULL);
 	curr_size--;
@@ -27,5 +27,5 @@ void	**realloc_two_d(void **array, int curr_size)
 		curr_size--;
 	}
 	free(array);
-	return(new_array);
+	return (new_array);
 }

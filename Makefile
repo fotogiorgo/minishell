@@ -6,7 +6,7 @@
 #    By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 18:42:58 by jofoto            #+#    #+#              #
-#    Updated: 2023/05/15 22:19:19 by jofoto           ###   ########.fr        #
+#    Updated: 2023/05/22 14:04:14 by jofoto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@ FLAGS =				-Wall -Wextra -Werror -fsanitize=address\
 
 SRC =				main.c builtins/pwd.c builtins/echo.c builtins/exit.c builtins/env.c \
 					builtins/export.c builtins/export_without_args.c builtins/unset.c builtins/cd.c\
-					interactive/signals.c tree/tree_making.c tree/exec_tree.c tree/exec_tree_helpers.c\
-					interactive/terminal_handles.c parsing/tokenize.c parsing/tokenize_helpers.c \
+					signals/signals.c tree/tree_making.c tree/exec_tree.c tree/exec_tree_helpers.c\
+					signals/terminal_handles.c parsing/tokenize.c parsing/tokenize_helpers.c \
 					parsing/init_realloc_vectors.c list_utils/list_utils.c list_utils/new_node_utils.c \
 					tree/tree_making_helpers.c parsing/tokenize_env.c helpers.c
 					

@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/14 11:26:15 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/22 14:27:48 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ static int	find_quote(char **str, t_token_vec	*tkn_vec, char quote)
 
 	if (searching_quote == 1)
 		quote = which_quote;
-	str[0]++; 
-	while(*str[0] != quote && *str[0] != '\0')
+	str[0]++;
+	while (*str[0] != quote && *str[0] != '\0')
 	{
 		if (*str[0] == '$' && quote != '\'')
 			add_env_var(str, tkn_vec);
@@ -38,8 +38,24 @@ static int	find_quote(char **str, t_token_vec	*tkn_vec, char quote)
 	{
 		searching_quote = 0;
 		str[0]++;
-		return(1);
+		return (1);
 	}
+}
+
+void	add_operator(char **str, char **token)
+{
+	static t_token_vec	tkn_vec;
+
+	init_token(&tkn_vec);
+	add_char_to_token(str, &tkn_vec);
+	if (*str[0] == '>' || *str[0] == '<')
+		add_char_to_token(str, &tkn_vec);
+	if (*str[0] != '\0' || *str[0] != ' ')
+	{
+		*token = tkn_vec.token;
+		tkn_vec.token = 0;
+	}
+	return ;
 }
 
 static int	get_token(char **str, char **token)
@@ -47,39 +63,45 @@ static int	get_token(char **str, char **token)
 	static t_token_vec	tkn_vec;
 
 	init_token(&tkn_vec);
-	while(*str[0] != '\0' && *str[0] != ' ')
+	while (*str[0] == ' ')
+		str[0]++;
+	while (*str[0] != '\0' && *str[0] != ' ')
 	{
 		if (*str[0] == '\'' || *str[0] == '\"')
 		{
-			if(!find_quote(str, &tkn_vec, *str[0]))
+			if (!find_quote(str, &tkn_vec, *str[0]))
 				return (1);
 		}
-		else if(*str[0] == '$')
+		else if (*str[0] == '$')
 			add_env_var(str, &tkn_vec);
-//		else if pipe / redirection
 		else
 			add_char_to_token(str, &tkn_vec);
 	}
 	*token = tkn_vec.token;
 	tkn_vec.token = 0;
-	if(*str[0] == '\0')
+	while (*str[0] == ' ' && *str[0] != '\0')
+		str[0]++;
+	if (*str[0] == '\0')
 		return (0);
 	else
 		return (1);
 }
+
 // if  we have an input which ends with a space it will give us a null ending 2d array
 // actually the character will be nul.. not the pointer
 static int	split_argv(char *str, t_argv_vec *argv)
 {
+	int	flag;
+
 	while (get_token(&str, &argv->argv[argv->curr]))
 	{
-		if(*str == '\0')
+		flag = 0;
+		if (*str == '\0')
 			return (0); // this means opened quote was given and we need more input
 		else
 			argv->curr++;
 		if (argv->curr == argv->cap)
 			realloc_vector(argv);
-		str++;
 	}
 	argv->curr++;
 	return (1);
@@ -87,13 +109,14 @@ static int	split_argv(char *str, t_argv_vec *argv)
 
 void	print_argv(t_argv_vec argv)
 {
-	for(int i = 0; i < argv.curr; i++)
+	for (int i = 0; i < argv.curr; i++)
 	{
 		printf("token %i: %s\n", i, argv.argv[i]);
 		// printf("token adress %i: %p\n", i, argv.argv[i]);
 		// printf("printing - curr: %i\n", argv.curr);
 	}
 }
+
 /* if you do ctr-c while waiting for a quote, its focked (well, not really, it just doesnt work like bash) */
 int	tokenize_input(char *str, t_argv_vec *argv)
 {
@@ -120,5 +143,6 @@ int	tokenize_input(char *str, t_argv_vec *argv)
 		str = dummy;
 	}
 	free(str);
+	// print_argv(*argv);
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/15 16:50:22 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/22 14:00:52 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@
 # include <readline/history.h> //add history
 # include <signal.h>
 # include <termios.h>
+# include <dirent.h>
 # include <fcntl.h>
+# include <errno.h>
 
 # define MAXIN 1024 // maxinput
 # define OPERATORS ">|<"
@@ -32,14 +34,14 @@
 # define REDIR		4
 # define HEREDOC	5
 
-typedef struct	s_argv_vec
+typedef struct s_argv_vec
 {
 	char	**argv;	//argv
 	int		curr;	//argc
 	int		cap;
 }				t_argv_vec;
 
-typedef struct	s_token_vec
+typedef struct s_token_vec
 {
 	char	*token;
 	int		curr;
@@ -74,7 +76,7 @@ typedef struct s_data
 	int			exit_code;
 }				t_data;
 
-t_data	data;
+t_data	g_data;
 
 //delete later
 void	print_argv(t_argv_vec	argv);
@@ -87,7 +89,6 @@ t_envp_list	*create_our_envp(char **envp);
 char		*get_key(char *str);
 char		*get_value(char *str);
 char		*get_value_from_key(char *key);
-
 //builtins
 void	get_cd(char **argv);
 void	get_pwd(void);
@@ -95,8 +96,9 @@ void	get_echo(char **argv);
 void	get_all_env(void);
 void	export_var(char **argv);
 void	export_without_args(char **argv);
+int		check_key_in_export(char *key, char *str);
 void	unset_var(char **argv);
-void	exit_func(void);
+void	exit_func(char **argv);
 
 //parsing
 void	check_command_from_input(t_argv_vec	*argv);
@@ -115,7 +117,6 @@ t_tree	*make_tree(t_argv_vec argv);
 char	*check_path(char *path, char *command);
 char	*get_path(char	*command);
 void	exec_tree(t_tree *tree);
-int		fork_wrapper_with_sigs(void);
 int		validate_redir_file(char *file);
 int		get_args(t_argv_vec *argv, t_tree *tree);
 int		init_tree_args(t_tree *tree);
@@ -124,7 +125,7 @@ int		add_remainder_to_beginning(t_argv_vec *argv, t_tree *tree);
 //interactive
 void	init_signals(void);
 void	init_terminal(void);
-void	rl_replace_line (const char *text, int clear_undo);
+void	rl_replace_line(const char *text, int clear_undo);
 void	disable_enable_echoctl(int enable);
 void	init_heredoc_sigs(void);
 

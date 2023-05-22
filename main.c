@@ -6,26 +6,21 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/15 21:32:17 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/22 14:20:01 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/minishell.h"
 
-void init_shell(void)
+void	init_shell(void)
 {
 	init_terminal();
 	init_signals();
-	//write(1, "\n\n\n\n Minishell by jofoto and kakumar \n\n\n\n", 42);
 }
 
-/* \033[11C moves cursor right 11 spots */
-/* \033[1A moves cursor up 1 spot */
 void	ctrl_D_handler(t_argv_vec *argv)
 {
 	disable_enable_echoctl(1);
-	//write(1, "\033[1A", 5);
-	//write(1, "\033[11C", 6);
 	write(1, "exit\n", 6);
 	exit(1);
 }
@@ -46,19 +41,19 @@ int	take_input(char *str, t_argv_vec *argv)
 			return (0);
 		}
 		add_history(buff);
-		if(tokenize_input(buff, argv) == 0)
+		if (tokenize_input(buff, argv) == 0)
 			return (0);
 	}
-	return(1);
+	return (1);
 }
 
 void	init_data(t_argv_vec *argv, char **envp)
 {
-	data.argv = argv;
-	data.num_of_env_var = 0;
-	data.envp_list = NULL;
-	data.envp_list = create_our_envp(envp);
-	data.exit_code = 0;
+	g_data.argv = argv;
+	g_data.num_of_env_var = 0;
+	g_data.envp_list = NULL;
+	g_data.envp_list = create_our_envp(envp);
+	g_data.exit_code = 0;
 	return ;
 }
 
@@ -85,18 +80,18 @@ void	init_data(t_argv_vec *argv, char **envp)
 
 void	print_tree(t_tree *tree)
 {
-	if(tree->right)
+	if (tree->right)
 		print_tree(tree->right);
-	if(tree->type == PIPE)
+	if (tree->type == PIPE)
 		write(1, "PIPE ", 6);
 	else if (tree->type == REDIR)
 		write(1, "REDIR ", 6);
 	else
 	{
 		write(1, "EXEC ", 6);
-		if(tree->argv_for_func)
+		if (tree->argv_for_func)
 		{
-			for(int i = 0; tree->argv_for_func[i]; i++)
+			for (int i = 0; tree->argv_for_func[i]; i++)
 				write(1, "arg ", 4);
 		}
 	}
@@ -111,6 +106,7 @@ int main(int argc, char **argv1, char **envp)
 	char		input_str[MAXIN];
 	t_argv_vec	argv;
 	t_tree		*tree;
+
 	(void) argv1;
 	(void) argc;
 	init_data(&argv, envp);
@@ -125,7 +121,5 @@ int main(int argc, char **argv1, char **envp)
 		exec_tree(tree);
 	}
 }
-
-
 /* change the wrapper to set the signals to default and see what the 
 heredoc does */
