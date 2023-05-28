@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/25 14:39:26 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/28 13:00:33 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ t_tree	*make_tree(t_argv_vec argv);
 char	*check_path(char *path, char *command);
 char	*get_path(char	*command);
 void	exec_tree(t_tree *tree);
-int		validate_redir_file(char *file, int type);
+int		validate_redir_file(char *file);
 int		get_args(t_argv_vec *argv, t_tree *tree);
 int		init_tree_args(t_tree *tree);
 int		add_remainder_to_beginning(t_argv_vec *argv, t_tree *tree);

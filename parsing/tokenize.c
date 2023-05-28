@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/28 12:32:47 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/28 12:53:47 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ static int	get_token(char **str, char **token)
 		}
 		else if (*str[0] == '$')
 			add_env_var(str, &tkn_vec);
-		else if (*str[0] == '|' || *str[0] == '<' || *str[0] == '>')
-			break ;
 		else
 			add_char_to_token(str, &tkn_vec);
 	}
@@ -108,15 +106,6 @@ static int	split_argv(char *str, t_argv_vec *argv)
 			argv->curr++;
 		if (argv->curr == argv->cap)
 			realloc_vector(argv);
-		if (*str == '|' || *str == '<' || *str == '>')
-		{
-			if (!add_operator(&str, argv))
-				return (0);
-			else
-				argv->curr++;
-			if (argv->curr == argv->cap)
-				realloc_vector(argv);
-		}
 	}
 	argv->curr++;
 	return (1);
@@ -158,6 +147,6 @@ int	tokenize_input(char *str, t_argv_vec *argv)
 		str = dummy;
 	}
 	free(str);
-	// print_argv(*argv);
+	print_argv(*argv);
 	return (1);
 }
