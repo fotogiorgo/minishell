@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:21:59 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/17 14:58:28 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/25 13:59:38 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	print_export_without_args(t_envp_list *list, int i, int flag)
 			printf("%c", list->variable[i]);
 			i++;
 		}
+		if (list->value != NULL && *list->value == '\0')
+			printf("%c%c", '"', '"');
 		if (flag > 0)
 			printf("%c\n", '"');
 		else

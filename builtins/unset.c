@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 13:51:25 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/17 14:58:41 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/25 14:39:31 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	delete_node(t_envp_list *temp, t_envp_list *prev, int len, char *str)
 	}
 	else if (temp != NULL && ft_strncmp(str, temp->key, len) == 0)
 	{
-		prev->next = temp->next;
+		if (temp->index == 0)
+			prev = temp->next;
+		else
+			prev->next = temp->next;
 		free(temp->value);
 		free(temp->key);
 		free(temp->variable);

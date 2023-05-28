@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 10:07:36 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/17 14:58:25 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/25 13:54:07 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ char	*modify_existing_env(t_envp_list *list, char *str)
 	char	*new_value;
 
 	new_value = get_value(str);
+	if (new_value == NULL)
+		return (list->value);
 	free(list->variable);
 	list->variable = ft_strdup(str);
 	if (list->value != NULL)

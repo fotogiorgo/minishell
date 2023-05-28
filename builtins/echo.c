@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 16:27:30 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/17 14:57:53 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/25 14:50:01 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	check_new_line(char **argv)
 	return (i);
 }
 
-void	get_echo(char	**argv)
+void	get_echo(char **argv)
 {
 	int	put_new_line;
 	int	j;

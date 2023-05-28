@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/23 09:38:46 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/28 12:32:47 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ static int	get_token(char **str, char **token)
 int	add_operator(char **str, t_argv_vec *argv)
 {
 	static t_token_vec	tkn_vec;
+	char				*nul;
 
 	init_token(&tkn_vec);
 	add_char_to_token(str, &tkn_vec);
@@ -83,7 +84,7 @@ int	add_operator(char **str, t_argv_vec *argv)
 		add_char_to_token(str, &tkn_vec);
 	if (*str[0] == '|' || *str[0] == '<' || *str[0] == '>')
 	{
-		printf("minishell: syntax error near unexpected token `%s'", tkn_vec.token);
+		printf("minishell: syntax error near unexpected token `%s'\n", tkn_vec.token);
 		tkn_vec.token = 0;
 		return (0);
 	}
@@ -101,21 +102,21 @@ static int	split_argv(char *str, t_argv_vec *argv)
 {
 	while (get_token(&str, &argv->argv[argv->curr]))
 	{
-		if (*str == '|' || *str == '<' || *str == '>')
-		{
-			if (argv->curr != 0)
-				argv->curr++;
-			if (argv->curr == argv->cap)
-				realloc_vector(argv);
-			if (!add_operator(&str, argv))
-				return (0);
-		}
 		if (*str == '\0')
 			return (0); // this means opened quote was given and we need more input
 		else
 			argv->curr++;
 		if (argv->curr == argv->cap)
 			realloc_vector(argv);
+		if (*str == '|' || *str == '<' || *str == '>')
+		{
+			if (!add_operator(&str, argv))
+				return (0);
+			else
+				argv->curr++;
+			if (argv->curr == argv->cap)
+				realloc_vector(argv);
+		}
 	}
 	argv->curr++;
 	return (1);
