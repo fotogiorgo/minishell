@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:42 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 10:52:40 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static int	get_token(char **str, char **token)
 		}
 		else if (*str[0] == '$')
 			add_env_var(str, &tkn_vec);
+		else if (*str[0] == '|' || *str[0] == '<' || *str[0] == '>')
+			break ;
 		else
 			add_char_to_token(str, &tkn_vec);
 	}
@@ -74,13 +76,12 @@ static int	get_token(char **str, char **token)
 int	add_operator(char **str, t_argv_vec *argv)
 {
 	static t_token_vec	tkn_vec;
-	char				*nul;
 
 	init_token(&tkn_vec);
 	add_char_to_token(str, &tkn_vec);
 	if (*str[0] == '>' || *str[0] == '<')
 		add_char_to_token(str, &tkn_vec);
-	if (*str[0] == '|' || *str[0] == '<' || *str[0] == '>')
+	if (*str[0] == '|' || *str[0] == '<' || *str[0] == '>' || *str[0] == '\0')
 	{
 		printf("minishell: syntax error near unexpected token `%s'\n", tkn_vec.token);
 		tkn_vec.token = 0;
@@ -96,19 +97,30 @@ int	add_operator(char **str, t_argv_vec *argv)
 
 // if  we have an input which ends with a space it will give us a null ending 2d array
 // actually the character will be nul.. not the pointer
-static int	split_argv(char *str, t_argv_vec *argv)
+void split_argv(char *str, t_argv_vec *argv)
 {
 	while (get_token(&str, &argv->argv[argv->curr]))
 	{
 		if (*str == '\0')
-			return (0); // this means opened quote was given and we need more input
-		else
+			return ; // this means opened quote was given and we need more input
+		else if (argv->argv[argv->curr][0] != '\0')
 			argv->curr++;
 		if (argv->curr == argv->cap)
 			realloc_vector(argv);
+		if (*str == '|' || *str == '<' || *str == '>')
+		{
+			if (!add_operator(&str, argv))
+				return ;
+			else
+				argv->curr++;
+			if (argv->curr == argv->cap)
+				realloc_vector(argv);
+			if (*str == '\0')
+				return ;
+		}
 	}
 	argv->curr++;
-	return (1);
+	return ;
 }
 
 void	print_argv(t_argv_vec argv)
@@ -127,7 +139,8 @@ int	tokenize_input(char *str, t_argv_vec *argv)
 	char	*dummy;
 
 	init_vec(argv);
-	while (!split_argv(str, argv))
+	split_argv(str, argv);
+	/* while (!split_argv(str, argv))
 	{
 		free(str);
 		rl_on_new_line();
@@ -145,7 +158,7 @@ int	tokenize_input(char *str, t_argv_vec *argv)
 		ft_strlcat(dummy, str, ft_strlen(str) + 2);
 		free(str);
 		str = dummy;
-	}
+	} */
 	free(str);
 	print_argv(*argv);
 	return (1);
