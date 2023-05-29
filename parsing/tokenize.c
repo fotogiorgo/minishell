@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/29 10:52:40 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 12:34:58 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ static int	find_quote(char **str, t_token_vec	*tkn_vec, char quote)
 	}
 	if (*str[0] == '\0')
 	{
-		add_nl_to_token(tkn_vec);
+		free(tkn_vec->token);
+		tkn_vec->token = 0;
 		searching_quote = 1;
 		which_quote = quote;
 		return (0);
@@ -54,7 +55,9 @@ static int	get_token(char **str, char **token)
 		if (*str[0] == '\'' || *str[0] == '\"')
 		{
 			if (!find_quote(str, &tkn_vec, *str[0]))
+			{
 				return (1);
+			}
 		}
 		else if (*str[0] == '$')
 			add_env_var(str, &tkn_vec);
@@ -84,6 +87,8 @@ int	add_operator(char **str, t_argv_vec *argv)
 	if (*str[0] == '|' || *str[0] == '<' || *str[0] == '>' || *str[0] == '\0')
 	{
 		printf("minishell: syntax error near unexpected token `%s'\n", tkn_vec.token);
+		free_argv(argv);
+		free(tkn_vec.token);
 		tkn_vec.token = 0;
 		return (0);
 	}
@@ -97,12 +102,16 @@ int	add_operator(char **str, t_argv_vec *argv)
 
 // if  we have an input which ends with a space it will give us a null ending 2d array
 // actually the character will be nul.. not the pointer
-void split_argv(char *str, t_argv_vec *argv)
+static int	split_argv(char *str, t_argv_vec *argv)
 {
 	while (get_token(&str, &argv->argv[argv->curr]))
 	{
 		if (*str == '\0')
-			return ; // this means opened quote was given and we need more input
+		{
+			printf("minishell: Unclosed quotes\n");
+			free_argv(argv);
+			return (0); // this means opened quote was given and we need more input
+		}
 		else if (argv->argv[argv->curr][0] != '\0')
 			argv->curr++;
 		if (argv->curr == argv->cap)
@@ -110,17 +119,17 @@ void split_argv(char *str, t_argv_vec *argv)
 		if (*str == '|' || *str == '<' || *str == '>')
 		{
 			if (!add_operator(&str, argv))
-				return ;
+				return (0);
 			else
 				argv->curr++;
 			if (argv->curr == argv->cap)
 				realloc_vector(argv);
 			if (*str == '\0')
-				return ;
+				return (0);
 		}
 	}
 	argv->curr++;
-	return ;
+	return (1);
 }
 
 void	print_argv(t_argv_vec argv)
@@ -136,10 +145,15 @@ void	print_argv(t_argv_vec argv)
 /* if you do ctr-c while waiting for a quote, its focked (well, not really, it just doesnt work like bash) */
 int	tokenize_input(char *str, t_argv_vec *argv)
 {
-	char	*dummy;
-
 	init_vec(argv);
-	split_argv(str, argv);
+	if (split_argv(str, argv) == 0)
+	{
+		// print_argv(*argv);
+		free(str);
+		return (0);
+	}
+	else
+		free(str);
 	/* while (!split_argv(str, argv))
 	{
 		free(str);
@@ -159,7 +173,6 @@ int	tokenize_input(char *str, t_argv_vec *argv)
 		free(str);
 		str = dummy;
 	} */
-	free(str);
-	print_argv(*argv);
+	// print_argv(*argv);
 	return (1);
 }

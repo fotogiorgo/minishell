@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 10:47:45 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:43 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 12:20:01 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,25 +27,7 @@ char	*get_env_from_list(char *var_name)
 		list = list->next;
 	}
 	if (list == NULL)
-	{
-		if (*g_data.argv->argv[g_data.argv->curr-1] == '>' || ft_strncmp(g_data.argv->argv[g_data.argv->curr-1], "<", 2) == 0)
-		{
-			printf("minishell: $%s: ambiguous redirect\n", var_name);
-			ret = ft_strjoin("$", var_name);
-			return (ret);
-		}
-		else if (ft_strncmp(g_data.argv->argv[g_data.argv->curr-1], "<<", 2) == 0)
-		{
-			ret = ft_strjoin("$", var_name);
-			return (ret);
-		}
 		return (NULL);
-	}
-	else if (ft_strncmp(g_data.argv->argv[g_data.argv->curr-1], "<<", 2) == 0)
-	{
-		ret = ft_strjoin("$", var_name);
-		return (ret);
-	}
 	else
 		ret = list->value;
 	return (ret);
@@ -55,29 +37,26 @@ void	do_edges(char *str, t_token_vec *tkn_vec)
 {
 	char	*var_value;
 	char	*exit_code;
+	char	*pointer_holder;
 
 	if (*str == ' ' || *str == '\0')
 	{
 		var_value = ft_strdup("$");
+		pointer_holder = var_value;
 		while (*var_value)
 			add_char_to_token(&var_value, tkn_vec);
+		free(pointer_holder);
 		return ;
 	}
 	else if (*str == '?')
 	{
 		exit_code = ft_itoa(g_data.exit_code);
+		pointer_holder = exit_code;
 		str++;
 		while (*exit_code)
 			add_char_to_token(&exit_code, tkn_vec);
+		free(pointer_holder);
 		return ;
-	}
-	else if (ft_isdigit(*str) == 1)
-		return ;
-	else if (ft_isalpha(*str) == 0)
-	{
-		var_value = ft_strdup("$");
-		while (*var_value)
-			add_char_to_token(&var_value, tkn_vec);
 	}
 	return ;
 }
@@ -91,10 +70,10 @@ void	add_env_var(char **str, t_token_vec *tkn_vec)
 
 	i = 0;
 	str[0]++;
-	if (*str[0] == ' ' || *str[0] == '\0' || ft_isdigit(*str[0]) == 1  || *str[0] == '_' || ft_isalpha(*str[0]) == 0)
+	if (*str[0] == ' ' || *str[0] == '\0' || *str[0] == '?' || *str[0] == '\'' || *str[0] == '\"' )
 	{
 		do_edges(str[0], tkn_vec);
-		if (*str[0] == '?' || ft_isdigit(*str[0]) == 1)
+		if (*str[0] == '?')
 			str[0]++;
 		return ;
 	}

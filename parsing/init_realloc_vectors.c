@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:54:30 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:43 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 11:36:44 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,17 @@ void	realloc_token(t_token_vec	*tkn_vec)
 	tkn_vec->token = new_token;
 }
 
-void	free_argv(t_argv_vec	*argv)
+void    free_argv(t_argv_vec    *argv)
 {
-	int	i;
+    int    i;
 
-	i = 0;
-	while (i < argv->curr)
-	{
-		free(argv->argv[i]);
-		i++;
-	}
-	free(argv->argv);
+    i = 0;
+    while (i < argv->curr)
+    {
+        free(argv->argv[i]);
+        argv->argv[i] = NULL;
+        i++;
+    }
+    free(argv->argv);
+    argv->argv = NULL;
 }

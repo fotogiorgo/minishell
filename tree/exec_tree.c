@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:57:56 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:01 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 12:04:27 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,13 @@ void	exec_ve(t_tree *tree)
 	char	*command;
 
 	command = get_path(tree->argv_for_func[0]);
-	if(fork_wrapper_with_sigs() == 0)
+	if (fork_wrapper_with_sigs() == 0)
 	{
 		execve(command, tree->argv_for_func, NULL);
 		write(2, "minishell: ", 11);
 		write(2, tree->argv_for_func[0], ft_strlen(tree->argv_for_func[0]));
 		write(2, ": command not found\n", 20);
+		// free(command);
 		exit(127);
 	}
 	wait(&(g_data.exit_code));
@@ -53,24 +54,23 @@ void	exec_ve(t_tree *tree)
 	free(command);
 }
 
-/* we might have an issue here with the -1 */
-void	exec_builtin_leaf(t_tree *tree)
+void    exec_builtin_leaf(t_tree *tree)
 {
-	tree->argv_for_func++;
-	if (ft_strncmp_case_ins(tree->argv_for_func[-1], "echo", 5) == 0)
-		get_echo(tree->argv_for_func);
-	else if (ft_strncmp_case_ins(tree->argv_for_func[-1], "exit", 5) == 0)
-		exit_func(tree->argv_for_func);
-	else if (ft_strncmp_case_ins(tree->argv_for_func[-1], "export", 7) == 0)
-		export_var(tree->argv_for_func);
-	else if (ft_strncmp_case_ins(tree->argv_for_func[-1], "pwd", 4) == 0)
-		get_pwd();
-	else if (ft_strncmp_case_ins(tree->argv_for_func[-1], "env", 4) == 0)
-		get_all_env();
-	else if (ft_strncmp_case_ins(tree->argv_for_func[-1], "cd", 3) == 0)
-		get_cd(tree->argv_for_func);
-	else if (ft_strncmp_case_ins(tree->argv_for_func[-1], "unset", 6) == 0)
-		unset_var(tree->argv_for_func);
+    /* tree->argv_for_func++; */
+    if (ft_strncmp_case_ins(*(tree->argv_for_func), "echo", 5) == 0)
+        get_echo(tree->argv_for_func+1);
+    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "exit", 5) == 0)
+        exit_func(tree->argv_for_func+1);
+    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "export", 7) == 0)
+        export_var(tree->argv_for_func+1);
+    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "pwd", 4) == 0)
+        get_pwd();
+    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "env", 4) == 0)
+        get_all_env();
+    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "cd", 3) == 0)
+        get_cd(tree->argv_for_func+1);
+    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "unset", 6) == 0)
+        unset_var(tree->argv_for_func+1);
 }
 
 void	exec_pipe(t_tree *tree)
@@ -141,6 +141,28 @@ void	exec_heredoc(t_tree *tree)
 	g_data.exit_code = g_data.exit_code % 255;
 }
 
+t_tree *select_next(t_tree *tree)
+{
+    int fd;
+
+    while(tree && tree->type == REDIR)
+    {
+        if (ft_strncmp(tree->argv_for_func[0], ">", 2) == 0)
+            fd = open(tree->argv_for_func[1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
+        else if (ft_strncmp(tree->argv_for_func[0], ">>", 2) == 0)
+            fd = open(tree->argv_for_func[1], O_CREAT | O_APPEND | O_WRONLY, 0644);
+        else if (ft_strncmp(tree->argv_for_func[0], "<", 2) == 0)
+        {
+            fd = open(tree->argv_for_func[1], O_RDONLY);
+            if (fd == -1)
+                panic("file does not exist");
+        }
+        close(fd);
+        tree = tree->right;
+    }
+    return (tree);
+}
+
 void	exec_redir(t_tree *tree)
 {
 	int	fd;
@@ -165,7 +187,7 @@ void	exec_redir(t_tree *tree)
 			dup2(fd, 0);
 		}
 		close(fd);
-		exec_tree(tree->right);
+		exec_tree(select_next(tree->right));
 		exit(0);
 	}
 	wait(&(g_data.exit_code));

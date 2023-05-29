@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:53:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:01 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 12:33:37 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	validate_redir_file(char *file)
 	}
 	else if (is_char_in_set(*file, OPERATORS))
 	{
+		printf("file: %s\n", file);
 		write(2, "minishell: syntax error near unexpected token `", 47);
 		write(2, file, 1);
 		write(2, "\'\n", 2);

@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:38 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 11:35:48 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,16 @@ void	print_tree(t_tree *tree)
 		print_tree(tree->left);
 }
 
+void    free_tree(t_tree *tree)
+{
+    if (tree && tree->right)
+        free_tree(tree->right);
+    if(tree && tree->left)
+        free_tree(tree->left);
+    free(tree->argv_for_func);
+    free(tree);
+}
+
 /* remember that after using the input free the entire argv
 so it can be used agaain for the next readline */
 int main(int argc, char **argv1, char **envp)
@@ -119,6 +129,9 @@ int main(int argc, char **argv1, char **envp)
 		signal(SIGINT, SIG_IGN);
 		disable_enable_echoctl(1);
 		exec_tree(tree);
+		free_tree(tree);
+		tree = 0;
+		free_argv(&argv);
 	}
 }
 /* change the wrapper to set the signals to default and see what the 

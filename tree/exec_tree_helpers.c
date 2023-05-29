@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:10:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/28 18:31:56 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 11:33:24 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*get_path(char	*command)
 	if (paths == NULL)
 		return (NULL);
 	split_paths = ft_split(paths, ':');
-	//free(paths);
+	// free(paths);
 	if (split_paths == NULL)
 		return (NULL);
 	while (split_paths[i] && ret == 0)
@@ -56,6 +56,6 @@ char	*get_path(char	*command)
 		ret = check_path(split_paths[i], command);
 		i++;
 	}
-	//free_split();
+	free_split(split_paths);
 	return (ret);
 }
