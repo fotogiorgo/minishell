@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/28 13:00:33 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 13:43:55 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_data
 	t_envp_list	*envp_list;
 	int			num_of_env_var;
 	int			exit_code;
+	int			default_stdout;
 }				t_data;
 
 t_data	g_data;
@@ -114,6 +115,7 @@ void	add_nl_to_token(t_token_vec	*tkn_vec);
 
 //tree
 t_tree	*make_tree(t_argv_vec argv);
+t_tree	*parce_exec(t_argv_vec *argv);
 char	*check_path(char *path, char *command);
 char	*get_path(char	*command);
 void	exec_tree(t_tree *tree);

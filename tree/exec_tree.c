@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_tree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:57:56 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/29 12:04:27 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 13:57:54 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,20 +108,23 @@ void	pipe_heredoc_line(t_tree *tree)
 
 	if(pipe(p) < 0)
 		exit(1);
-	line = readline("> ");
-	/* if (line == NULL)
-		write(1, "\033[1A\033[2C", 9); */
-	while (line && ft_strncmp(tree->argv_for_func[1], line, ft_strlen(tree->argv_for_func[1])) != 0)
+	if (fork_wrapper_with_sigs() == 0)
 	{
-		write(p[1], line, ft_strlen(line));
-		write(p[1], "\n", 1);
-		free(line);
+		dup2(g_data.default_stdout, 1);
 		line = readline("> ");
-		/* if (line == NULL)
-			write(1, "\033[1A\033[2C", 9); */
+		while (line && ft_strncmp(tree->argv_for_func[1], line, ft_strlen(tree->argv_for_func[1])) != 0)
+		{
+			write(p[1], line, ft_strlen(line));
+			write(p[1], "\n", 1);
+			free(line);
+			line = readline("> ");
+		}
+		if (line)
+			free(line);
+		close(p[0]);
+		close(p[1]);
+		exit(1);
 	}
-	if (line)
-		free(line);
 	dup2(p[0], 0);
 	close(p[0]);
 	close(p[1]);

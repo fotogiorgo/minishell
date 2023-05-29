@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_making.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 21:32:48 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:02 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 13:51:24 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int	get_type(char *str)
 	return (EXEC);
 }
 
-static t_tree	*parce_exec(t_argv_vec *argv)
+t_tree	*parce_exec(t_argv_vec *argv)
 {
 	t_tree	*ret;
 	int		i;
@@ -70,7 +70,7 @@ static t_tree	*parce_redir(t_argv_vec *argv, t_tree *right_node)
 	argv->argv += 2;
 	argv->curr -= 2;
 	ret->right = right_node;
-	add_remainder_to_beginning(argv, right_node); // what if it returns 0 cause malloc failed
+	add_remainder_to_beginning(argv, ret); // what if it returns 0 cause malloc failed
 	return (ret);
 }
 
@@ -87,6 +87,7 @@ static t_tree	*parce_pipe(t_argv_vec *argv, t_tree *right_node)
 	argv->curr--;
 	ret->right = right_node;
 	ret->left = parce_exec(argv);
+	//add_remainder to beggining?
 	return (ret);
 }
 
@@ -109,7 +110,7 @@ t_tree	*make_tree(t_argv_vec argv)
 		else
 			ret = parce_exec(&argv);
 	}
+	//print_tree(ret);
 	return (ret);
 }
-
 /* we have to think about || or | | and shit like that.. for now its handled as an argument */

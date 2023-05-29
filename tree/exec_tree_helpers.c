@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_tree_helpers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:10:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/29 11:33:24 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 13:57:25 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ char	*check_path(char *path, char *command)
 	free(ret);
 	return (NULL);
 }
-
 /* remember to free split and in exec_ve the ret of this func*/
 char	*get_path(char	*command)
 {
@@ -48,7 +47,6 @@ char	*get_path(char	*command)
 	if (paths == NULL)
 		return (NULL);
 	split_paths = ft_split(paths, ':');
-	// free(paths);
 	if (split_paths == NULL)
 		return (NULL);
 	while (split_paths[i] && ret == 0)

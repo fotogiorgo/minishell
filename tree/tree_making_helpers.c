@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree_making_helpers.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:53:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/29 12:33:37 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 13:59:35 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,17 @@ int	get_args(t_argv_vec *argv, t_tree *tree)
 
 int	add_remainder_to_beginning(t_argv_vec *argv, t_tree *tree)
 {
-	if(tree == NULL)
-		return (1);
-	while (tree->right)
+	t_tree	*new_node;
+
+	while (tree && tree->right)
 		tree = tree->right;
-	if (!get_args(argv, tree))
+	if (!tree || (tree->type != EXEC && tree->type != BI_EXEC))
+	{
+		new_node = parce_exec(argv);
+		tree->right = new_node;
+		return(1);
+	}
+	else if (!get_args(argv, tree))
 		return (0);
 	return (1);
 }

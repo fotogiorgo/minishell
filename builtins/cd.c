@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 10:14:12 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:57 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/29 10:07:46 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	change_oldpwd_env(char old[1024])
 	char		*new_value;
 
 	list = g_data.envp_list;
-	new_value = ft_strdup(old);
+	new_value = ft_strdup(old); //leak?
 	while (list)
 	{
 		if (ft_strncmp(list->key, "OLDPWD", 7) == 0)
@@ -75,7 +75,7 @@ void	change_pwd_env(char old[1024])
 
 	list = g_data.envp_list;
 	getcwd(curr_folder, sizeof(curr_folder));
-	new_value = ft_strdup(curr_folder);
+	new_value = ft_strdup(curr_folder); //leak
 	while (list)
 	{
 		if (ft_strncmp(list->key, "PWD", 4) == 0)
