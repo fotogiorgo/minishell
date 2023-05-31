@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:57:56 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/30 12:11:23 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/31 10:01:57 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,58 +81,65 @@ void	exec_pipe(t_tree *tree)
 		exit(1);
 	if(fork_wrapper_with_sigs() == 0)
 	{
-		dup2(p[0], 0);
-		close(p[0]);
-		close(p[1]);
-		exec_tree(tree->left);
-		exit(0);
-	}
-	if(fork_wrapper_with_sigs() == 0)
-	{
 		dup2(p[1], 1);
 		close(p[0]);
 		close(p[1]);
 		exec_tree(tree->right);
 		exit(0);
 	}
+	wait(&(g_data.exit_code));
+	if(fork_wrapper_with_sigs() == 0)
+	{
+		//if(tree->left->type == EXEC || tree->left->type == BI_EXEC)
+		dup2(p[0], 0);
+		close(p[0]);
+		close(p[1]);
+		exec_tree(tree->left);
+		exit(0);
+	}
 	close(p[0]);
 	close(p[1]);
-	wait(&(g_data.exit_code));
 	wait(&(g_data.exit_code));
 }
 
-void	pipe_heredoc_line(t_tree *tree)
+static void	pipe_heredoc_line(t_tree *tree, int p[2])
 {
 	char	*line;
-	int		p[2];
-
-	if(pipe(p) < 0)
-		exit(1);
-	line = readline("> ");
-	/* if (line == NULL)
-		write(1, "\033[1A\033[2C", 9); */
-	while (line && ft_strncmp(tree->argv_for_func[1], line, ft_strlen(tree->argv_for_func[1])) != 0)
+	
+	if (fork_wrapper_with_sigs() == 0)
 	{
-		write(p[1], line, ft_strlen(line));
-		write(p[1], "\n", 1);
-		free(line);
+		dup2(g_data.default_stdout, 1);
+		dup2(g_data.default_stdin, 0);
 		line = readline("> ");
-		/* if (line == NULL)
-			write(1, "\033[1A\033[2C", 9); */
+		while (line && ft_strncmp(tree->argv_for_func[1], line, ft_strlen(tree->argv_for_func[1])) != 0)
+		{
+			write(p[1], line, ft_strlen(line));
+			write(p[1], "\n", 1);
+			free(line);
+			line = readline("> ");
+		}
+		if (line)
+			free(line);
+		close(p[0]);
+		close(p[1]);
+		exit(1);
 	}
-	if (line)
-		free(line);
+	wait(NULL);
 	dup2(p[0], 0);
-	close(p[0]);
-	close(p[1]);
 }
 
 void	exec_heredoc(t_tree *tree)
 {
+	int		p[2];
+
 	if (fork_wrapper_with_sigs() == 0)
 	{
+		if(pipe(p) < 0)
+			exit(1);
 		init_heredoc_sigs();
-		pipe_heredoc_line(tree);
+		pipe_heredoc_line(tree, p);
+		close(p[0]);
+		close(p[1]);
 		disable_enable_echoctl(1);
 		exec_tree(tree->right);
 		exit(0);

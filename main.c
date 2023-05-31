@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/30 11:32:23 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/31 10:08:55 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	init_data(t_argv_vec *argv, char **envp)
 	g_data.envp_list = NULL;
 	g_data.envp_list = create_our_envp(envp);
 	g_data.exit_code = 0;
+	g_data.default_stdout = dup(STDOUT_FILENO);
+	g_data.default_stdin = dup(STDIN_FILENO);
 	return ;
 }
 
@@ -90,6 +92,8 @@ void	print_tree(t_tree *tree)
 		write(1, "PIPE ", 6);
 	else if (tree->type == REDIR)
 		write(1, "REDIR ", 6);
+	else if (tree->type == HEREDOC)
+		write(1, "HEREDOC ", 8);
 	else
 	{
 		write(1, "EXEC ", 6);
@@ -103,7 +107,7 @@ void	print_tree(t_tree *tree)
 		print_tree(tree->left);
 }
 
-void    free_tree(t_tree *tree)
+void	free_tree(t_tree *tree)
 {
     if (tree && tree->right)
         free_tree(tree->right);
@@ -121,6 +125,7 @@ int main(int argc, char **argv1, char **envp)
 {
 	char		input_str[MAXIN];
 	t_argv_vec	argv;
+	t_argv_vec	holder;
 	t_tree		*tree;
 
 	(void) argv1;
@@ -131,13 +136,15 @@ int main(int argc, char **argv1, char **envp)
 		init_shell();
 		if (!take_input(input_str, &argv))
 			continue;
-		tree = make_tree(argv); // what if maketree doesnt return
+		holder = argv;
+		//print_argv(argv);
+		tree = make_tree(&argv); // what if maketree doesnt return
+		//print_tree(tree);
 		signal(SIGINT, SIG_IGN);
 		disable_enable_echoctl(1);
 		exec_tree(tree);
 		free_tree(tree);
-		tree = 0;
-		free_argv(&argv);
+		free_argv(&holder);
 	}
 }
 /* change the wrapper to set the signals to default and see what the 

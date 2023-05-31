@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/30 11:28:14 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/31 10:01:29 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	add_operator(char **str, t_argv_vec *argv)
 	}
 	else
 	{
+		tkn_vec.token[ft_strlen(tkn_vec.token) + 1] = 'o';
 		argv->argv[argv->curr] = tkn_vec.token;
 		tkn_vec.token = 0;
 	}

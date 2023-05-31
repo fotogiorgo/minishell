@@ -3,14 +3,14 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+         #
+#    By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 18:42:58 by jofoto            #+#    #+#              #
-#    Updated: 2023/05/25 14:39:22 by kakumar          ###   ########.fr        #
+#    Updated: 2023/05/30 16:12:41 by jofoto           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-FLAGS =				-Wall -Wextra -Werror \
+FLAGS =				-Wall -Wextra -Werror -fsanitize=address\
 					-lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
 
 SRC =				main.c builtins/pwd.c builtins/echo.c builtins/exit.c builtins/env.c \
