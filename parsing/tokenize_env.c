@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 10:47:45 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/29 12:20:01 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/30 11:01:26 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@ char	*get_env_from_list(char *var_name)
 	int			len;
 	char		*ret;
 
+	if (*var_name == '\0' || var_name == NULL)
+		return (NULL);
 	list = g_data.envp_list;
 	len = ft_strlen(var_name) + 1;
-	while (list && *var_name != '\0')
+	while (list)
 	{
 		if (ft_strncmp(list->key, var_name, len) == 0)
 			break ;

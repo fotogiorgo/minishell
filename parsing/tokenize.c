@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/29 12:34:58 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/30 11:28:14 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,7 @@ static int	get_token(char **str, char **token)
 		if (*str[0] == '\'' || *str[0] == '\"')
 		{
 			if (!find_quote(str, &tkn_vec, *str[0]))
-			{
 				return (1);
-			}
 		}
 		else if (*str[0] == '$')
 			add_env_var(str, &tkn_vec);
@@ -66,6 +64,8 @@ static int	get_token(char **str, char **token)
 		else
 			add_char_to_token(str, &tkn_vec);
 	}
+	// if (*tkn_vec.token == '\0')
+	// 	free(&tkn_vec.token);
 	*token = tkn_vec.token;
 	tkn_vec.token = 0;
 	while (*str[0] == ' ' && *str[0] != '\0')
@@ -137,7 +137,7 @@ void	print_argv(t_argv_vec argv)
 	for (int i = 0; i < argv.curr; i++)
 	{
 		printf("token %i: %s\n", i, argv.argv[i]);
-		// printf("token adress %i: %p\n", i, argv.argv[i]);
+		printf("token adress %i: %p\n", i, argv.argv[i]);
 		// printf("printing - curr: %i\n", argv.curr);
 	}
 }
@@ -145,6 +145,12 @@ void	print_argv(t_argv_vec argv)
 /* if you do ctr-c while waiting for a quote, its focked (well, not really, it just doesnt work like bash) */
 int	tokenize_input(char *str, t_argv_vec *argv)
 {
+	// if (str == NULL)
+	// {
+	// 	// free_argv(argv);
+	// 	// free(str);
+	// 	return (0);
+	// }
 	init_vec(argv);
 	if (split_argv(str, argv) == 0)
 	{

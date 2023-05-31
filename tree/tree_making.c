@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 21:32:48 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:02 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/30 11:33:30 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,11 @@ t_tree	*make_tree(t_argv_vec argv)
 	t_tree	*ret;
 
 	ret = NULL;
+	if (argv.argv[0][0] == '\0')
+	{
+		ret = parce_exec(&argv);
+		return (ret);
+	}
 	while(argv.curr > 0 && argv.argv[0] && argv.argv[0][0])
 	{
 		if (argv.argv[0][0] == '|')

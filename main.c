@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/29 11:35:48 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/30 11:32:23 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init_shell(void)
 
 void	ctrl_D_handler(t_argv_vec *argv)
 {
+	// free_argv(argv);
 	disable_enable_echoctl(1);
 	write(1, "exit\n", 6);
 	exit(1);
@@ -42,7 +43,10 @@ int	take_input(char *str, t_argv_vec *argv)
 		}
 		add_history(buff);
 		if (tokenize_input(buff, argv) == 0)
+		{
+			// free(buff);
 			return (0);
+		}
 	}
 	return (1);
 }
@@ -105,8 +109,10 @@ void    free_tree(t_tree *tree)
         free_tree(tree->right);
     if(tree && tree->left)
         free_tree(tree->left);
-    free(tree->argv_for_func);
-    free(tree);
+	if (tree && tree->argv_for_func)
+    	free(tree->argv_for_func);
+	if (tree)
+   		free(tree);
 }
 
 /* remember that after using the input free the entire argv
