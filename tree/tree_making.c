@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 21:32:48 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/29 13:51:24 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/30 18:26:20 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static int	get_type(char *str)
 {
+	//printf("Str: %s\n", str);
 	if (ft_strncmp_case_ins(str, "echo", ft_strlen(str)+1) == 0 || \
 		ft_strncmp_case_ins(str, "cd", ft_strlen(str)+1) == 0 || \
 		ft_strncmp_case_ins(str, "pwd", ft_strlen(str)+1) == 0 || \
@@ -86,29 +87,29 @@ static t_tree	*parce_pipe(t_argv_vec *argv, t_tree *right_node)
 	argv->argv++;
 	argv->curr--;
 	ret->right = right_node;
-	ret->left = parce_exec(argv);
+	ret->left = make_tree(argv);
 	//add_remainder to beggining?
 	return (ret);
 }
 
 /* they will segfault here "argv.argv[0]" because argv is not null terminated */
-t_tree	*make_tree(t_argv_vec argv)
+t_tree	*make_tree(t_argv_vec *argv)
 {
 	t_tree	*ret;
 
 	ret = NULL;
-	while(argv.curr > 0 && argv.argv[0] && argv.argv[0][0])
+	while(argv->curr > 0 && argv->argv[0] && argv->argv[0][0])
 	{
-		if (argv.argv[0][0] == '|')
-			ret = parce_pipe(&argv, ret);
-		else if (argv.argv[0][0] == '>' || argv.argv[0][0] == '<')
+		if (argv->argv[0][0] == '|')
+			ret = parce_pipe(argv, ret);
+		else if (argv->argv[0][0] == '>' || argv->argv[0][0] == '<')
 		{
-			ret = parce_redir(&argv, ret);
+			ret = parce_redir(argv, ret);
 			if (ret == NULL)
 				return (NULL);
 		}
 		else
-			ret = parce_exec(&argv);
+			ret = parce_exec(argv);
 	}
 	//print_tree(ret);
 	return (ret);

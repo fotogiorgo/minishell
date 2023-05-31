@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/29 13:43:55 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/30 18:41:46 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_data
 	int			num_of_env_var;
 	int			exit_code;
 	int			default_stdout;
+	int			default_stdin;
 }				t_data;
 
 t_data	g_data;
@@ -114,7 +115,7 @@ void	add_char_to_token(char	**str, t_token_vec	*tkn_vec);
 void	add_nl_to_token(t_token_vec	*tkn_vec);
 
 //tree
-t_tree	*make_tree(t_argv_vec argv);
+t_tree	*make_tree(t_argv_vec *argv);
 t_tree	*parce_exec(t_argv_vec *argv);
 char	*check_path(char *path, char *command);
 char	*get_path(char	*command);

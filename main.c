@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/29 14:00:57 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/30 19:08:31 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	init_data(t_argv_vec *argv, char **envp)
 	g_data.envp_list = create_our_envp(envp);
 	g_data.exit_code = 0;
 	g_data.default_stdout = dup(STDOUT_FILENO);
+	g_data.default_stdin = dup(STDIN_FILENO);
 	return ;
 }
 
@@ -118,6 +119,7 @@ int main(int argc, char **argv1, char **envp)
 {
 	char		input_str[MAXIN];
 	t_argv_vec	argv;
+	t_argv_vec	holder;
 	t_tree		*tree;
 
 	(void) argv1;
@@ -128,14 +130,15 @@ int main(int argc, char **argv1, char **envp)
 		init_shell();
 		if (!take_input(input_str, &argv))
 			continue;
+		holder = argv;
 		//print_argv(argv);
-		tree = make_tree(argv); // what if maketree doesnt return
+		tree = make_tree(&argv); // what if maketree doesnt return
 		//print_tree(tree);
 		signal(SIGINT, SIG_IGN);
 		disable_enable_echoctl(1);
 		exec_tree(tree);
-		free_tree(tree);
-		free_argv(&argv);
+		//free_tree(tree);
+		//free_argv(&holder);
 	}
 }
 /* change the wrapper to set the signals to default and see what the 

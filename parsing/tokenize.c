@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/29 13:56:59 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/29 15:48:33 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	add_operator(char **str, t_argv_vec *argv)
 	}
 	else
 	{
+		tkn_vec.token[ft_strlen(tkn_vec.token) + 1] = 'o';
 		argv->argv[argv->curr] = tkn_vec.token;
 		tkn_vec.token = 0;
 	}

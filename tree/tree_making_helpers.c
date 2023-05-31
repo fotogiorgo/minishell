@@ -6,7 +6,7 @@
 /*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:53:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/29 13:59:35 by jofoto           ###   ########.fr       */
+/*   Updated: 2023/05/29 16:17:01 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,19 @@ int	init_tree_args(t_tree *tree)
 	return (1);
 }
 
+int	more_args(t_argv_vec *argv)
+{
+	if (argv->curr <= 0 || !argv->argv[0])
+		return (0);
+	if (is_char_in_set(argv->argv[0][0], OPERATORS) && ft_strlen(argv->argv[0]) < 3
+	&& argv->argv[0][ft_strlen(argv->argv[0]) + 1] == 'o')
+		return (0);
+	return(1);
+}
+
 int	get_args(t_argv_vec *argv, t_tree *tree)
 {
-	while (argv->curr > 0 && argv->argv[0] && \
-	!is_char_in_set(argv->argv[0][0], OPERATORS))
+	while (more_args(argv))
 	{
 		if (tree->argv_curr == tree->argv_cap - 1)
 		{
@@ -65,7 +74,9 @@ int	add_remainder_to_beginning(t_argv_vec *argv, t_tree *tree)
 {
 	t_tree	*new_node;
 
-	while (tree && tree->right)
+	if(more_args(argv) == 0)
+		return(1);
+	while (tree && tree->right && tree->right->type != PIPE)
 		tree = tree->right;
 	if (!tree || (tree->type != EXEC && tree->type != BI_EXEC))
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jofoto <jofoto@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 16:27:30 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:57 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/31 09:53:15 by jofoto           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,27 +16,15 @@ void	print_echo(char	**argv, int put_new_line, int i)
 {
 	if (!argv[i])
 		return ;
-	if (put_new_line == 0)
+	while (argv[i] != NULL)
 	{
-		while (argv[i] != NULL)
-		{
-			printf("%s", argv[i]);
-			i++;
-			if (argv[i] != NULL)
-				printf(" ");
-		}
+		printf("%s", argv[i]);
+		i++;
+		if (argv[i] != NULL)
+			printf(" ");
 	}
-	else if (put_new_line == 1)
-	{
-		while (argv[i] != NULL)
-		{
-			printf("%s", argv[i]);
-			i++;
-			if (i < g_data.argv->curr)
-				printf(" ");
-		}
+	if (put_new_line == 1)
 		printf("\n");
-	}
 }
 
 int	check_new_line(char **argv)
