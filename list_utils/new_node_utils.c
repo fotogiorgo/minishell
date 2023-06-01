@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:45:05 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:52 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/31 11:15:27 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*get_key_which_has_value(char *str, int len)
 	char	*key;
 	int		i;
 
-	key = ft_calloc (i + 1, sizeof(char));;
+	key = ft_calloc (i + 1, sizeof(char));
 	i = 0;
 	while (str[i] != '=')
 	{
@@ -76,7 +76,7 @@ char	*put_value(char *str)
 	i = 0;
 	while (str[i])
 		i++;
-	value = ft_calloc (i + 1, sizeof(char));;
+	value = ft_calloc (i + 1, sizeof(char));
 	i = 0;
 	while (str[i])
 	{

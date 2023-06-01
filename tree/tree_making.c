@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 21:32:48 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/31 10:04:27 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/01 10:08:03 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int	get_type(char *str)
 {
-	//printf("Str: %s\n", str);
 	if (ft_strncmp_case_ins(str, "echo", ft_strlen(str)+1) == 0 || \
 		ft_strncmp_case_ins(str, "cd", ft_strlen(str)+1) == 0 || \
 		ft_strncmp_case_ins(str, "pwd", ft_strlen(str)+1) == 0 || \
@@ -25,7 +24,7 @@ static int	get_type(char *str)
 		return (BI_EXEC);
 	if (*str == '|' && ft_strlen(str) == 1)
 		return (PIPE);
-	if (ft_strncmp_case_ins(str, "<<", ft_strlen(str)+1) == 0) // here maybe we shouldnt do +1
+	if (ft_strncmp_case_ins(str, "<<", ft_strlen(str) + 1) == 0)
 		return (HEREDOC);
 	if ((*str == '>' || *str == '<') && ft_strlen(str) <= 2)
 		return (REDIR);
@@ -40,12 +39,12 @@ t_tree	*parce_exec(t_argv_vec *argv)
 	i = 0;
 	ret = ft_calloc(1, sizeof(t_tree));
 	if (ret == NULL)
-		exit(1); //should we exit
+		exit(1);
 	ret->type = get_type(argv->argv[0]);
 	if (!init_tree_args(ret))
-		exit(1);// should we use exit?
+		exit(1);
 	if (!get_args(argv, ret))
-		exit(1); //same
+		exit(1);
 	ret->left = NULL;
 	ret->right = NULL;
 	return (ret);
@@ -65,13 +64,16 @@ static t_tree	*parce_redir(t_argv_vec *argv, t_tree *right_node)
 		return (NULL); // same as up free first
 	ret->type = get_type(argv->argv[0]);
 	ret->argv_for_func[0] = argv->argv[0];
-	ret->argv_for_func[1] = argv->argv[1]; // issue if only << is given
-	if (!validate_redir_file(ret->argv_for_func[1])) // issue if only << is given
+	ret->argv_for_func[1] = argv->argv[1];
+	if (!validate_redir_file(ret->argv_for_func[1], ret->type))
+	{
+		free_tree(ret);
 		return (NULL); // same as up
+	}
 	argv->argv += 2;
 	argv->curr -= 2;
 	ret->right = right_node;
-	add_remainder_to_beginning(argv, ret); // what if it returns 0 cause malloc failed
+	add_remainder_to_beginning(argv, ret);
 	return (ret);
 }
 
@@ -92,18 +94,17 @@ static t_tree	*parce_pipe(t_argv_vec *argv, t_tree *right_node)
 	return (ret);
 }
 
-/* they will segfault here "argv->argv[0]" because argv is not null terminated */
 t_tree	*make_tree(t_argv_vec *argv)
 {
 	t_tree	*ret;
 
 	ret = NULL;
-	if (argv->argv[0][0] == '\0')
-	{
-		ret = parce_exec(argv);
-		return (ret);
-	}
-	while(argv->curr > 0 && argv->argv[0] && argv->argv[0][0])
+	// if (argv->argv[0][0] == '\0')
+	// {
+	// 	ret = parce_exec(argv);
+	// 	return (ret);
+	// }
+	while (argv->curr > 0 && argv->argv[0])
 	{
 		if (argv->argv[0][0] == '|')
 			ret = parce_pipe(argv, ret);
@@ -116,7 +117,5 @@ t_tree	*make_tree(t_argv_vec *argv)
 		else
 			ret = parce_exec(argv);
 	}
-	//print_tree(ret);
 	return (ret);
 }
-/* we have to think about || or | | and shit like that.. for now its handled as an argument */

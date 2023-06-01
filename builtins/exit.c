@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:39:10 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:59 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/31 11:00:41 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,4 @@ void	exit_func(char **argv)
 	disable_enable_echoctl(1);
 	write(2, "exit\n", 6);
 	exit(g_data.exit_code);
-	//kill(getppid(), SIGTSTP);
 }

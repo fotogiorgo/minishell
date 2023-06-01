@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:10:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/31 10:01:44 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/01 12:19:04 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*check_path(char *path, char *command)
 	free(ret);
 	return (NULL);
 }
-/* remember to free split and in exec_ve the ret of this func*/
+
 char	*get_path(char	*command)
 {
 	char	**split_paths;

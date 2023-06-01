@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/31 10:08:55 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/01 11:23:05 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,22 +18,20 @@ void	init_shell(void)
 	init_signals();
 }
 
-void	ctrl_D_handler(t_argv_vec *argv)
+void	ctrl_d_handler(t_argv_vec *argv)
 {
-	// free_argv(argv);
 	disable_enable_echoctl(1);
 	write(1, "exit\n", 6);
 	exit(1);
 }
 
-//buff is free'd in tokenize_input()
 int	take_input(char *str, t_argv_vec *argv)
 {
 	char	*buff;
 
 	buff = readline("minishell$ ");
 	if (buff == NULL)
-		ctrl_D_handler(argv);
+		ctrl_d_handler(argv);
 	else
 	{
 		if (ft_strlen(buff) < 1)
@@ -44,7 +42,7 @@ int	take_input(char *str, t_argv_vec *argv)
 		add_history(buff);
 		if (tokenize_input(buff, argv) == 0)
 		{
-			// free(buff);
+			free_argv(argv);
 			return (0);
 		}
 	}
@@ -103,24 +101,23 @@ void	print_tree(t_tree *tree)
 				write(1, "arg ", 4);
 		}
 	}
-	if(tree->left)
+	write(1, "\n", 1);
+	if (tree->left)
 		print_tree(tree->left);
 }
 
 void	free_tree(t_tree *tree)
 {
-    if (tree && tree->right)
-        free_tree(tree->right);
-    if(tree && tree->left)
-        free_tree(tree->left);
+	if (tree && tree->right)
+		free_tree(tree->right);
+	if (tree && tree->left)
+		free_tree(tree->left);
 	if (tree && tree->argv_for_func)
-    	free(tree->argv_for_func);
+		free(tree->argv_for_func);
 	if (tree)
-   		free(tree);
+		free(tree);
 }
 
-/* remember that after using the input free the entire argv
-so it can be used agaain for the next readline */
 int main(int argc, char **argv1, char **envp)
 {
 	char		input_str[MAXIN];
@@ -135,15 +132,20 @@ int main(int argc, char **argv1, char **envp)
 	{
 		init_shell();
 		if (!take_input(input_str, &argv))
-			continue;
+		{
+			// free_argv(&argv);
+			continue ;
+		}
+		// print_argv(argv);
 		holder = argv;
-		//print_argv(argv);
+		// printf("argvcurr: %i || gdata argvcurr: %i\n", argv.curr, g_data.argv->curr);
 		tree = make_tree(&argv); // what if maketree doesnt return
-		//print_tree(tree);
+		// print_tree(tree);
 		signal(SIGINT, SIG_IGN);
 		disable_enable_echoctl(1);
 		exec_tree(tree);
 		free_tree(tree);
+		// printf("are we here\n");
 		free_argv(&holder);
 	}
 }

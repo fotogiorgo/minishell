@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 13:51:25 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/28 18:33:01 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/31 14:32:57 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	unset_var(char **argv)
 
 	i = 0;
 	g_data.exit_code = 0;
-	while (i < g_data.argv->curr - 1)
+	while (argv[i] != NULL)
 	{
 		len = ft_strlen(argv[i]) + 1;
 		temp = g_data.envp_list;

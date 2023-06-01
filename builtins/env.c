@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 12:52:39 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/28 18:32:58 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/05/31 11:00:32 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ t_envp_list	*create_our_envp(char **envp)
 	g_data.num_of_env_var++;
 	while (envp[g_data.num_of_env_var] != NULL)
 	{
-		ft_add_back(&envp_list, envp[g_data.num_of_env_var], g_data.num_of_env_var);
+		ft_add_back(&envp_list, envp[g_data.num_of_env_var], \
+		g_data.num_of_env_var);
 		g_data.num_of_env_var++;
 	}
 	return (envp_list);

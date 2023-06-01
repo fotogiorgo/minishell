@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:57:56 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/31 10:01:57 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/01 12:14:46 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	check_exit_status(void)
 	}
 }
 
-/* command cant be freed cause process gets replaced with execve
-we can just replace "func_to_exec" wit it if needed */
 void	exec_ve(t_tree *tree)
 {
 	char	*command;
@@ -45,32 +43,30 @@ void	exec_ve(t_tree *tree)
 		write(2, "minishell: ", 11);
 		write(2, tree->argv_for_func[0], ft_strlen(tree->argv_for_func[0]));
 		write(2, ": command not found\n", 20);
-		// free(command);
 		exit(127);
 	}
 	wait(&(g_data.exit_code));
 	g_data.exit_code = g_data.exit_code % 255;
 	check_exit_status();
-	free(command);
+	// free(command);
 }
 
-void    exec_builtin_leaf(t_tree *tree)
+void	exec_builtin_leaf(t_tree *tree)
 {
-    /* tree->argv_for_func++; */
-    if (ft_strncmp_case_ins(*(tree->argv_for_func), "echo", 5) == 0)
-        get_echo(tree->argv_for_func+1);
-    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "exit", 5) == 0)
-        exit_func(tree->argv_for_func+1);
-    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "export", 7) == 0)
-        export_var(tree->argv_for_func+1);
-    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "pwd", 4) == 0)
-        get_pwd();
-    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "env", 4) == 0)
-        get_all_env();
-    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "cd", 3) == 0)
-        get_cd(tree->argv_for_func+1);
-    else if (ft_strncmp_case_ins(*(tree->argv_for_func), "unset", 6) == 0)
-        unset_var(tree->argv_for_func+1);
+	if (ft_strncmp_case_ins(*(tree->argv_for_func), "echo", 5) == 0)
+		get_echo(tree->argv_for_func + 1);
+	else if (ft_strncmp_case_ins(*(tree->argv_for_func), "exit", 5) == 0)
+		exit_func(tree->argv_for_func + 1);
+	else if (ft_strncmp_case_ins(*(tree->argv_for_func), "export", 7) == 0)
+		export_var(tree->argv_for_func + 1);
+	else if (ft_strncmp_case_ins(*(tree->argv_for_func), "pwd", 4) == 0)
+		get_pwd();
+	else if (ft_strncmp_case_ins(*(tree->argv_for_func), "env", 4) == 0)
+		get_all_env();
+	else if (ft_strncmp_case_ins(*(tree->argv_for_func), "cd", 3) == 0)
+		get_cd(tree->argv_for_func + 1);
+	else if (ft_strncmp_case_ins(*(tree->argv_for_func), "unset", 6) == 0)
+		unset_var(tree->argv_for_func + 1);
 }
 
 void	exec_pipe(t_tree *tree)
@@ -79,7 +75,7 @@ void	exec_pipe(t_tree *tree)
 
 	if (pipe(p) < 0)
 		exit(1);
-	if(fork_wrapper_with_sigs() == 0)
+	if (fork_wrapper_with_sigs() == 0)
 	{
 		dup2(p[1], 1);
 		close(p[0]);
@@ -88,9 +84,8 @@ void	exec_pipe(t_tree *tree)
 		exit(0);
 	}
 	wait(&(g_data.exit_code));
-	if(fork_wrapper_with_sigs() == 0)
+	if (fork_wrapper_with_sigs() == 0)
 	{
-		//if(tree->left->type == EXEC || tree->left->type == BI_EXEC)
 		dup2(p[0], 0);
 		close(p[0]);
 		close(p[1]);
@@ -105,13 +100,13 @@ void	exec_pipe(t_tree *tree)
 static void	pipe_heredoc_line(t_tree *tree, int p[2])
 {
 	char	*line;
-	
+
 	if (fork_wrapper_with_sigs() == 0)
 	{
 		dup2(g_data.default_stdout, 1);
 		dup2(g_data.default_stdin, 0);
 		line = readline("> ");
-		while (line && ft_strncmp(tree->argv_for_func[1], line, ft_strlen(tree->argv_for_func[1])) != 0)
+		while (line && ft_strncmp(tree->argv_for_func[1], line, ft_strlen(tree->argv_for_func[1]) + 1) != 0)
 		{
 			write(p[1], line, ft_strlen(line));
 			write(p[1], "\n", 1);
@@ -134,7 +129,7 @@ void	exec_heredoc(t_tree *tree)
 
 	if (fork_wrapper_with_sigs() == 0)
 	{
-		if(pipe(p) < 0)
+		if (pipe(p) < 0)
 			exit(1);
 		init_heredoc_sigs();
 		pipe_heredoc_line(tree, p);
@@ -148,26 +143,28 @@ void	exec_heredoc(t_tree *tree)
 	g_data.exit_code = g_data.exit_code % 255;
 }
 
-t_tree *select_next(t_tree *tree)
+t_tree	*select_next(t_tree *tree)
 {
-    int fd;
+	int fd;
 
-    while(tree && tree->type == REDIR)
-    {
-        if (ft_strncmp(tree->argv_for_func[0], ">", 2) == 0)
-            fd = open(tree->argv_for_func[1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
-        else if (ft_strncmp(tree->argv_for_func[0], ">>", 2) == 0)
-            fd = open(tree->argv_for_func[1], O_CREAT | O_APPEND | O_WRONLY, 0644);
-        else if (ft_strncmp(tree->argv_for_func[0], "<", 2) == 0)
-        {
-            fd = open(tree->argv_for_func[1], O_RDONLY);
-            if (fd == -1)
-                panic("file does not exist");
-        }
-        close(fd);
-        tree = tree->right;
-    }
-    return (tree);
+	while (tree && tree->type == REDIR)
+	{
+		if (ft_strncmp(tree->argv_for_func[0], ">", 2) == 0)
+			fd = open(tree->argv_for_func[1], \
+			O_CREAT | O_TRUNC | O_WRONLY, 0644);
+		else if (ft_strncmp(tree->argv_for_func[0], ">>", 2) == 0)
+			fd = open(tree->argv_for_func[1], \
+			O_CREAT | O_APPEND | O_WRONLY, 0644);
+		else if (ft_strncmp(tree->argv_for_func[0], "<", 2) == 0)
+		{
+			fd = open(tree->argv_for_func[1], O_RDONLY);
+			if (fd == -1)
+				panic("file does not exist");
+		}
+		close(fd);
+		tree = tree->right;
+	}
+	return (tree);
 }
 
 void	exec_redir(t_tree *tree)
@@ -178,12 +175,14 @@ void	exec_redir(t_tree *tree)
 	{
 		if (ft_strncmp(tree->argv_for_func[0], ">", 2) == 0)
 		{
-			fd = open(tree->argv_for_func[1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
+			fd = open(tree->argv_for_func[1], \
+			O_CREAT | O_TRUNC | O_WRONLY, 0644);
 			dup2(fd, 1);
 		}
 		else if (ft_strncmp(tree->argv_for_func[0], ">>", 2) == 0)
 		{
-			fd = open(tree->argv_for_func[1], O_CREAT | O_APPEND | O_WRONLY, 0644);
+			fd = open(tree->argv_for_func[1], \
+			O_CREAT | O_APPEND | O_WRONLY, 0644);
 			dup2(fd, 1);
 		}
 		else if (ft_strncmp(tree->argv_for_func[0], "<", 2) == 0)
@@ -202,7 +201,7 @@ void	exec_redir(t_tree *tree)
 
 void	exec_tree(t_tree *tree)
 {
-	if(tree == NULL)
+	if (tree == NULL)
 		return ;
 	else if (tree->type == BI_EXEC)
 		exec_builtin_leaf(tree);
