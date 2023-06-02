@@ -6,7 +6,7 @@
 #    By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 18:42:58 by jofoto            #+#    #+#              #
-#    Updated: 2023/05/31 10:07:47 by kakumar          ###   ########.fr        #
+#    Updated: 2023/06/02 09:28:38 by kakumar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,9 @@ SRC =				main.c builtins/pwd.c builtins/echo.c builtins/exit.c builtins/env.c \
 					signals/signals.c tree/tree_making.c tree/exec_tree.c tree/exec_tree_helpers.c\
 					signals/terminal_handles.c parsing/tokenize.c parsing/tokenize_helpers.c \
 					parsing/init_realloc_vectors.c list_utils/list_utils.c list_utils/new_node_utils.c \
-					tree/tree_making_helpers.c parsing/tokenize_env.c helpers.c
+					tree/tree_making_helpers.c parsing/tokenize_env.c helpers.c tree/exec_tree_operations.c \
+					tree/exec_tree_operations_utils.c \
+					print.c
 					
 
 OBJ =				$(SRC:%.c=%.o)

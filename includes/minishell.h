@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/06/01 11:58:16 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/02 09:30:17 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ typedef struct s_data
 t_data	g_data;
 
 //delete later
-void		print_argv(t_argv_vec	argv);
-void		print_tree(t_tree *tree);
+void		print_argv(t_argv_vec	argv); // delete
+void		print_tree(t_tree *tree); // delete
 //list
 t_envp_list	*ft_newlst(char	*str, int i);
 void		ft_add_back(t_envp_list	**lst, char *str, int i);
@@ -104,6 +104,7 @@ void		exit_func(char **argv);
 //parsing
 void		check_command_from_input(t_argv_vec	*argv);
 int			tokenize_input(char *str, t_argv_vec	*argv);
+int			deal_with_operators(char **str, t_argv_vec *argv);
 void		init_vec(t_argv_vec	*argv);
 void		init_token(t_token_vec	*tkn_vec);
 void		add_env_var(char **str, t_token_vec *tkn_vec);
@@ -118,12 +119,19 @@ t_tree		*make_tree(t_argv_vec *argv);
 t_tree		*parce_exec(t_argv_vec *argv);
 char		*check_path(char *path, char *command);
 char		*get_path(char	*command);
-void		exec_tree(t_tree *tree);
 int			validate_redir_file(char *file, int type);
 int			get_args(t_argv_vec *argv, t_tree *tree);
 int			init_tree_args(t_tree *tree);
 int			add_remainder_to_beginning(t_argv_vec *argv, t_tree *tree);
 void		free_tree(t_tree *tree);
+void		exec_tree(t_tree *tree);
+//operations
+void		exec_pipe(t_tree *tree);
+void		exec_heredoc(t_tree *tree);
+void		exec_redir(t_tree *tree);
+//operations utils
+void		pipe_heredoc_line(t_tree *tree, int p[2]);
+t_tree		*select_next(t_tree *tree);
 
 //interactive
 void		init_signals(void);
@@ -133,5 +141,6 @@ void		disable_enable_echoctl(int enable);
 void		init_heredoc_sigs(void);
 
 //helpers
+void		panic(char *error_str);
 int			fork_wrapper_with_sigs(void);
 #endif

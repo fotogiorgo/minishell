@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/02 17:54:30 by jofoto            #+#    #+#             */
-/*   Updated: 2023/06/01 11:16:26 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/02 09:09:28 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	init_token(t_token_vec	*tkn_vec)
 		return ;
 	tkn_vec->token = ft_calloc(11, sizeof(char));
 	if (tkn_vec->token == NULL)
-		exit(1); // leaks
+		exit(1);
 	tkn_vec->cap = 10;
 	tkn_vec->curr = 0;
 }
@@ -64,21 +64,4 @@ void	realloc_token(t_token_vec	*tkn_vec)
 	ft_strlcpy(new_token, tkn_vec->token, tkn_vec->cap);
 	free(tkn_vec->token);
 	tkn_vec->token = new_token;
-}
-
-void	free_argv(t_argv_vec *argv)
-{
-	int	i;
-
-	i = 0;
-	if (argv->argv == NULL)
-		return ;
-	while (argv->argv[i] != NULL)
-	{
-		free(argv->argv[i]);
-		argv->argv[i] = NULL;
-		i++;
-	}
-	free(argv->argv);
-	argv->argv = NULL;
 }

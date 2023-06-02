@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:47:11 by jofoto            #+#    #+#             */
-/*   Updated: 2023/05/31 13:37:35 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/02 09:09:35 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,33 @@ int	fork_wrapper_with_sigs(void)
 		signal(SIGQUIT, SIG_DFL);
 	}
 	return (pid);
+}
+
+void	free_tree(t_tree *tree)
+{
+	if (tree && tree->right)
+		free_tree(tree->right);
+	if (tree && tree->left)
+		free_tree(tree->left);
+	if (tree && tree->argv_for_func)
+		free(tree->argv_for_func);
+	if (tree)
+		free(tree);
+}
+
+void	free_argv(t_argv_vec *argv)
+{
+	int	i;
+
+	i = 0;
+	if (argv->argv == NULL)
+		return ;
+	while (argv->argv[i] != NULL)
+	{
+		free(argv->argv[i]);
+		argv->argv[i] = NULL;
+		i++;
+	}
+	free(argv->argv);
+	argv->argv = NULL;
 }

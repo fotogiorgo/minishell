@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:10:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/06/01 12:19:04 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/01 14:40:17 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*check_path(char *path, char *command)
 	size = ft_strlen(path) + ft_strlen(command) + 2;
 	ret = malloc(size);
 	if (ret == NULL)
-		return (NULL); //does it have to exit?
+		return (NULL);
 	ft_strlcpy(ret, path, size);
 	ft_strlcat(ret, "/", size);
 	ft_strlcat(ret, command, size);

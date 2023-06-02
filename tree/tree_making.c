@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 21:32:48 by jofoto            #+#    #+#             */
-/*   Updated: 2023/06/01 10:08:03 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/01 14:40:06 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,17 @@ static t_tree	*parce_redir(t_argv_vec *argv, t_tree *right_node)
 	i = 0;
 	ret = ft_calloc(1, sizeof(t_tree));
 	if (ret == NULL)
-		return (NULL); // and free rest of the tree cause in make_tree we loe access to it
+		return (NULL);
 	ret->argv_for_func = ft_calloc(3, sizeof(char *));
 	if (ret->argv_for_func == NULL)
-		return (NULL); // same as up free first
+		return (NULL);
 	ret->type = get_type(argv->argv[0]);
 	ret->argv_for_func[0] = argv->argv[0];
 	ret->argv_for_func[1] = argv->argv[1];
 	if (!validate_redir_file(ret->argv_for_func[1], ret->type))
 	{
 		free_tree(ret);
-		return (NULL); // same as up
+		return (NULL);
 	}
 	argv->argv += 2;
 	argv->curr -= 2;
@@ -84,13 +84,12 @@ static t_tree	*parce_pipe(t_argv_vec *argv, t_tree *right_node)
 	ret = ft_calloc(1, sizeof(t_tree));
 	ret->type = get_type(argv->argv[0]);
 	if (!init_tree_args(ret))
-		exit(1);// should we use exit?
+		exit(1);
 	ret->argv_for_func[0] = argv->argv[0];
 	argv->argv++;
 	argv->curr--;
 	ret->right = right_node;
 	ret->left = make_tree(argv);
-	//add_remainder to beggining?
 	return (ret);
 }
 
@@ -99,11 +98,6 @@ t_tree	*make_tree(t_argv_vec *argv)
 	t_tree	*ret;
 
 	ret = NULL;
-	// if (argv->argv[0][0] == '\0')
-	// {
-	// 	ret = parce_exec(argv);
-	// 	return (ret);
-	// }
 	while (argv->curr > 0 && argv->argv[0])
 	{
 		if (argv->argv[0][0] == '|')
