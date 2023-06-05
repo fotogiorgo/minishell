@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:57:56 by jofoto            #+#    #+#             */
-/*   Updated: 2023/06/02 10:11:03 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/05 15:24:56 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,27 @@
 
 void	panic(char *error_str)
 {
-	write(2, "minishell: ", 12);
-	write(2, error_str, ft_strlen(error_str));
-	write(2, ": No such file or directory\n", 29);
-	exit(1);
+	if (access(error_str, F_OK) == 0)
+	{
+		if (access(error_str, R_OK) != 0 \
+		|| access(error_str, W_OK) != 0 \
+		|| access(error_str, X_OK) != 0)
+		{
+			write(2, "minishell: ", 12);
+			write(2, error_str, ft_strlen(error_str));
+			write(2, ": Permission denied\n", 21);
+			g_data.exit_code = 1;
+			exit(1);
+		}
+	}
+	else
+	{
+		write(2, "minishell: ", 12);
+		write(2, error_str, ft_strlen(error_str));
+		write(2, ": No such file or directory\n", 29);
+		g_data.exit_code = 1;
+		exit(1);
+	}
 }
 
 void	check_exit_status(void)
@@ -27,10 +44,15 @@ void	check_exit_status(void)
 	else if (WIFSIGNALED(g_data.exit_code))
 	{
 		if (WTERMSIG(g_data.exit_code) == 2)
+		{
 			write(2, "\n", 1);
+			g_data.exit_code += 128;
+		}
 		else if (WTERMSIG(g_data.exit_code) == 3)
+		{
 			write(1, "Quit: 3\n", 9);
-		g_data.exit_code += 128;
+			g_data.exit_code += 128;
+		}
 	}
 }
 
@@ -50,7 +72,8 @@ void	exec_ve(t_tree *tree)
 	wait(&(g_data.exit_code));
 	g_data.exit_code = g_data.exit_code % 255;
 	check_exit_status();
-	// free(command);
+	if (command)
+		free(command);
 }
 
 void	exec_builtin_leaf(t_tree *tree)

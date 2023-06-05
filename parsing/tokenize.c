@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 16:50:03 by jofoto            #+#    #+#             */
-/*   Updated: 2023/06/02 10:09:27 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/05 15:39:33 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ static int	find_quote(char **str, t_token_vec	*tkn_vec, char quote)
 	}
 	if (*str[0] == '\0')
 	{
+		free(tkn_vec->token);
 		tkn_vec->token = 0;
 		return (0);
 	}
@@ -69,7 +70,10 @@ static int	get_token(char **str, char **token)
 	while (*str[0] == ' ')
 		str[0]++;
 	if (*str[0] == '\0')
+	{
+		g_data.exit_code = 0;
 		return (2);
+	}
 	if (add_token(str, token) == 1)
 		return (1);
 	while (*str[0] == ' ' && *str[0] != '\0')
