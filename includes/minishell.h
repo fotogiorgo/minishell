@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/06/02 09:30:17 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/06 09:57:07 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_data
 	int			exit_code;
 	int			default_stdout;
 	int			default_stdin;
+	pid_t		parent_pid;
 }				t_data;
 
 t_data	g_data;

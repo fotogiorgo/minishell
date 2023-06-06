@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/06/05 08:58:55 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/06 09:54:43 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	init_data(t_argv_vec *argv, char **envp)
 	g_data.exit_code = 0;
 	g_data.default_stdout = dup(STDOUT_FILENO);
 	g_data.default_stdin = dup(STDIN_FILENO);
+	g_data.parent_pid = getpid();
 	return ;
 }
 

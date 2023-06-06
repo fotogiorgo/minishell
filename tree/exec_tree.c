@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 18:57:56 by jofoto            #+#    #+#             */
-/*   Updated: 2023/06/05 15:24:56 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/06 10:10:05 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,6 @@ void	exec_tree(t_tree *tree)
 		exec_redir(tree);
 	else if (tree->type == HEREDOC)
 		exec_heredoc(tree);
+	g_data.exit_code = g_data.exit_code % 255;
 	return ;
 }

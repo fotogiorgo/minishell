@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 09:13:16 by kakumar           #+#    #+#             */
-/*   Updated: 2023/06/05 09:03:11 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/06 10:02:12 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	exec_pipe(t_tree *tree)
 		dup2(p[1], 1);
 		close(p[0]);
 		close(p[1]);
-		if (ft_strncmp_case_ins(*(tree->right->argv_for_func), "exit", 5) == 0)
-			exit(0);
 		exec_tree(tree->right);
 		exit(0);
 	}
@@ -34,8 +32,6 @@ void	exec_pipe(t_tree *tree)
 		dup2(p[0], 0);
 		close(p[0]);
 		close(p[1]);
-		if (ft_strncmp_case_ins(*(tree->left->argv_for_func), "exit", 5) == 0)
-			exit(0);
 		exec_tree(tree->left);
 		exit(0);
 	}

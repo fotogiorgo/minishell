@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:10:53 by jofoto            #+#    #+#             */
-/*   Updated: 2023/06/05 15:24:39 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/06 10:09:56 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	*get_path(char	*command)
 	i = 0;
 	ret = 0;
 	if (access(command, F_OK | X_OK) == 0)
-		return (command);
+		return (ft_strdup(command));
 	paths = get_value_from_key("PATH");
 	if (paths == NULL)
 		return (NULL);
@@ -52,6 +52,7 @@ char	*get_path(char	*command)
 	while (split_paths[i] && ret == 0)
 	{
 		ret = check_path(split_paths[i], command);
+		printf("ret: %s || ret adr: %p\n", ret, ret);
 		i++;
 	}
 	free_split(split_paths);

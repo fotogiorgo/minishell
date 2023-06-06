@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 13:39:10 by kakumar           #+#    #+#             */
-/*   Updated: 2023/06/05 15:36:49 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/06 10:04:46 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,19 @@ int	check_chars_in_exit(char *str)
 	return (0);
 }
 
+void	set_exit_exit_code(int i, char **argv)
+{
+	if (i == 0)
+		g_data.exit_code = ft_atoi(argv[0]) % 256;
+	else if (i == 1)
+	{
+		printf("minishell: exit: %s: numeric argument required\n", argv[0]);
+		g_data.exit_code = 255;
+	}
+	else
+		g_data.exit_code = 0;
+}
+
 void	exit_func(char **argv)
 {
 	int	i;
@@ -49,17 +62,9 @@ void	exit_func(char **argv)
 		return ;
 	}
 	else
-	{
-		if (i == 0)
-			g_data.exit_code = ft_atoi(argv[0]) % 256;
-		else if (i == 1)
-			g_data.exit_code = 255;
-		else
-			g_data.exit_code = 0;
-	}
-	if (i == 1)
-		printf("minishell: exit: %s: numeric argument required\n", argv[0]);
+		set_exit_exit_code(i, argv);
 	disable_enable_echoctl(1);
-	write(2, "exit\n", 6);
+	if (g_data.parent_pid == getpid())
+		write(2, "exit\n", 6);
 	exit(g_data.exit_code);
 }
