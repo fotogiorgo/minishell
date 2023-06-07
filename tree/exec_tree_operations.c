@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 09:13:16 by kakumar           #+#    #+#             */
-/*   Updated: 2023/06/06 10:02:12 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/07 10:31:22 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	exec_pipe(t_tree *tree)
 		close(p[0]);
 		close(p[1]);
 		exec_tree(tree->right);
-		exit(0);
+		exit(g_data.exit_code);
 	}
 	wait(&(g_data.exit_code));
 	if (fork_wrapper_with_sigs() == 0)
@@ -33,7 +33,7 @@ void	exec_pipe(t_tree *tree)
 		close(p[0]);
 		close(p[1]);
 		exec_tree(tree->left);
-		exit(0);
+		exit(g_data.exit_code);
 	}
 	close(p[0]);
 	close(p[1]);

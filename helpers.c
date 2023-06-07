@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 18:47:11 by jofoto            #+#    #+#             */
-/*   Updated: 2023/06/02 09:09:35 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/07 10:08:36 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,14 @@ void	free_argv(t_argv_vec *argv)
 	i = 0;
 	if (argv->argv == NULL)
 		return ;
-	while (argv->argv[i] != NULL)
+	while (i < argv->curr)
 	{
 		free(argv->argv[i]);
 		argv->argv[i] = NULL;
 		i++;
 	}
 	free(argv->argv);
+	argv->cap = 0;
+	argv->curr = 0;
 	argv->argv = NULL;
 }

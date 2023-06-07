@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:21:19 by kakumar           #+#    #+#             */
-/*   Updated: 2023/06/06 09:54:43 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/07 10:01:34 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,3 @@ int	main(int argc, char **argv1, char **envp)
 		free_argv(&holder);
 	}
 }
-/* change the wrapper to set the signals to default and see what the 
-heredoc does */

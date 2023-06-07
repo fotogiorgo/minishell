@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 10:47:45 by kakumar           #+#    #+#             */
-/*   Updated: 2023/05/31 11:27:07 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/07 10:49:30 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	do_edges(char *str, t_token_vec *tkn_vec)
 	char	*exit_code;
 	char	*pointer_holder;
 
-	if (*str == ' ' || *str == '\0')
+	if (*str == ' ' || *str == '\0' || \
+	(*str == '\"' && (str[1] == ' ' || str[1] == '\0')))
 	{
 		var_value = ft_strdup("$");
 		pointer_holder = var_value;

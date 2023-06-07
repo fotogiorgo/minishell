@@ -6,7 +6,7 @@
 /*   By: kakumar <kakumar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/24 13:25:28 by kakumar           #+#    #+#             */
-/*   Updated: 2023/06/06 09:57:07 by kakumar          ###   ########.fr       */
+/*   Updated: 2023/06/07 09:57:32 by kakumar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,6 @@ typedef struct s_data
 
 t_data	g_data;
 
-//delete later
-void		print_argv(t_argv_vec	argv); // delete
-void		print_tree(t_tree *tree); // delete
 //list
 t_envp_list	*ft_newlst(char	*str, int i);
 void		ft_add_back(t_envp_list	**lst, char *str, int i);
